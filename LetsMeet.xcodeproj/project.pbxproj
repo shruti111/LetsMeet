@@ -1,0 +1,707 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9D0FEC551BB6795400A0AF3E /* MeetingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D0FEC541BB6795400A0AF3E /* MeetingCell.swift */; };
+		9D1097A91B7F381200C294F8 /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1097A81B7F381200C294F8 /* LandingViewController.swift */; };
+		9D24CFF01B16DFEB00E25AED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D24CFEF1B16DFEB00E25AED /* AppDelegate.swift */; };
+		9D24CFF51B16DFEB00E25AED /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D24CFF31B16DFEB00E25AED /* Main.storyboard */; };
+		9D24CFF71B16DFEB00E25AED /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D24CFF61B16DFEB00E25AED /* Images.xcassets */; };
+		9D24CFFA1B16DFEB00E25AED /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D24CFF81B16DFEB00E25AED /* LaunchScreen.xib */; };
+		9D24D0061B16DFEB00E25AED /* LetsMeetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D24D0051B16DFEB00E25AED /* LetsMeetTests.swift */; };
+		9D49AA3E1B8240370025C80C /* ContactBubbleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D49AA3D1B8240370025C80C /* ContactBubbleStyle.swift */; };
+		9D49AA411B82416C0025C80C /* ContactTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D49AA401B82416C0025C80C /* ContactTextField.swift */; };
+		9D49AA431B8248C80025C80C /* ContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D49AA421B8248C80025C80C /* ContactView.swift */; };
+		9D5079481B6D104E007D8CBA /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5079471B6D104E007D8CBA /* Contact.swift */; };
+		9D55C1A11BB64F48005290EB /* AllMeetingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D55C1A01BB64F48005290EB /* AllMeetingsViewController.swift */; };
+		9D5C388D1BB820F800A69FF3 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5C388C1BB820F800A69FF3 /* ThemeManager.swift */; };
+		9D5E49D21B6E2D4F0079952A /* NSDate+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5E49D11B6E2D4F0079952A /* NSDate+Extensions.swift */; };
+		9D5E49D41B6E2DBC0079952A /* RemindersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5E49D31B6E2DBC0079952A /* RemindersTableViewController.swift */; };
+		9D6A41ED1B5F218500E8B558 /* BounceAnimatorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D6A41EC1B5F218500E8B558 /* BounceAnimatorController.swift */; };
+		9D6A41EF1B5F21C700E8B558 /* MeetingDataTitleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D6A41EE1B5F21C700E8B558 /* MeetingDataTitleViewController.swift */; };
+		9D6A41F11B5F23F400E8B558 /* DimmingPresentationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D6A41F01B5F23F400E8B558 /* DimmingPresentationViewController.swift */; };
+		9D6A41F31B5F246000E8B558 /* SlideOutAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D6A41F21B5F246000E8B558 /* SlideOutAnimationController.swift */; };
+		9D6A41F51B5F249F00E8B558 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D6A41F41B5F249F00E8B558 /* GradientView.swift */; };
+		9D6A960E1B6E7C1E00FB3262 /* VenueTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D6A960D1B6E7C1E00FB3262 /* VenueTableViewCell.swift */; };
+		9D6A96101B6E83B700FB3262 /* Venue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D6A960F1B6E83B700FB3262 /* Venue.swift */; };
+		9D6BD6671B69479600A70E70 /* ParentlocationCategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D6BD6661B69479600A70E70 /* ParentlocationCategoryTableViewCell.swift */; };
+		9D6BD6691B6952A500A70E70 /* NestedlocationCategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D6BD6681B6952A500A70E70 /* NestedlocationCategoryCollectionViewCell.swift */; };
+		9D6BD66B1B69533500A70E70 /* NestedCategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D6BD66A1B69533500A70E70 /* NestedCategoriesViewController.swift */; };
+		9D6BF83A1BBFBD4300D5E6A2 /* PhotoViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D6BF8391BBFBD4300D5E6A2 /* PhotoViewerViewController.swift */; };
+		9D76D9B41B88B9B9000CC2B7 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D76D9B31B88B9B9000CC2B7 /* Client.swift */; };
+		9D76D9B71B88BB16000CC2B7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D76D9B61B88BB16000CC2B7 /* Constants.swift */; };
+		9D76D9B91B88BF8B000CC2B7 /* FoursquareConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D76D9B81B88BF8B000CC2B7 /* FoursquareConvenience.swift */; };
+		9D7874E81B82D63700B798DF /* MyContactPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7874E71B82D63700B798DF /* MyContactPickerView.swift */; };
+		9D8832AF1BAA51B4007DCF30 /* AddressBookClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8832AE1BAA51B4007DCF30 /* AddressBookClient.swift */; };
+		9D8A7F171BB7A88B001C4F6B /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8A7F161BB7A88B001C4F6B /* SettingsViewController.swift */; };
+		9D8A7F191BB7B61F001C4F6B /* MeetingInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8A7F181BB7B61E001C4F6B /* MeetingInfoViewController.swift */; };
+		9D8A7F1C1BB809A9001C4F6B /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8A7F1A1BB809A9001C4F6B /* ContactTableViewCell.swift */; };
+		9D8A7F1D1BB809A9001C4F6B /* ContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D8A7F1B1BB809A9001C4F6B /* ContactTableViewCell.xib */; };
+		9D932EA51B67C8200017544F /* LcationCategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D932EA41B67C8200017544F /* LcationCategoriesViewController.swift */; };
+		9D932EA71B67C87F0017544F /* FoursquareClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D932EA61B67C87F0017544F /* FoursquareClient.swift */; };
+		9D932EAA1B67E4CF0017544F /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9D932EA81B67E4CF0017544F /* Model.xcdatamodeld */; };
+		9D932EAC1B67E5AA0017544F /* CoreDataStackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D932EAB1B67E5AA0017544F /* CoreDataStackManager.swift */; };
+		9D932EAE1B67E7250017544F /* Locationcategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D932EAD1B67E7250017544F /* Locationcategory.swift */; };
+		9D9AA8321B9C3F810059A596 /* VenueImagesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9AA8311B9C3F810059A596 /* VenueImagesCollectionView.swift */; };
+		9D9AA8351B9C6E220059A596 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D9AA8341B9C6E220059A596 /* CloudKit.framework */; };
+		9D9DA17A1B84FD9500CDAD59 /* MyContactPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9DA1791B84FD9500CDAD59 /* MyContactPickerViewController.swift */; };
+		9DAB19D21BC0F30E001B7162 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAB19D11BC0F30E001B7162 /* MapViewController.swift */; };
+		9DAB19D41BC16CAE001B7162 /* MeetingStepsInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAB19D31BC16CAE001B7162 /* MeetingStepsInfoViewController.swift */; };
+		9DDCE7031B63225100DF228C /* MeetingDateTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DDCE7021B63225100DF228C /* MeetingDateTimeViewController.swift */; };
+		9DE082861BC6FC3B006296F8 /* README in Resources */ = {isa = PBXBuildFile; fileRef = 9DE082851BC6FC3A006296F8 /* README */; };
+		9DEAACAE1B8E21F400431285 /* SearchLocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEAACAD1B8E21F400431285 /* SearchLocationsViewController.swift */; };
+		9DEE23041BBE4A6500E572BE /* MeetingVenueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEE23031BBE4A6500E572BE /* MeetingVenueViewController.swift */; };
+		9DF656401B806BBA001DF4F8 /* Meeting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF6563F1B806BBA001DF4F8 /* Meeting.swift */; };
+		9DF656421B80726C001DF4F8 /* CloudClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF656411B80726C001DF4F8 /* CloudClient.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9D24D0001B16DFEB00E25AED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9D24CFE21B16DFEB00E25AED /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9D24CFE91B16DFEB00E25AED;
+			remoteInfo = LetsMeet;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		9D0FEC541BB6795400A0AF3E /* MeetingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeetingCell.swift; sourceTree = "<group>"; };
+		9D1097A81B7F381200C294F8 /* LandingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LandingViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9D24CFEA1B16DFEB00E25AED /* LetsMeet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LetsMeet.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D24CFEE1B16DFEB00E25AED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9D24CFEF1B16DFEB00E25AED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AppDelegate.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9D24CFF41B16DFEB00E25AED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		9D24CFF61B16DFEB00E25AED /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		9D24CFF91B16DFEB00E25AED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		9D24CFFF1B16DFEB00E25AED /* LetsMeetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LetsMeetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D24D0041B16DFEB00E25AED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9D24D0051B16DFEB00E25AED /* LetsMeetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LetsMeetTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9D49AA3D1B8240370025C80C /* ContactBubbleStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ContactBubbleStyle.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9D49AA401B82416C0025C80C /* ContactTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ContactTextField.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9D49AA421B8248C80025C80C /* ContactView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ContactView.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9D5079471B6D104E007D8CBA /* Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Contact.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9D55C1A01BB64F48005290EB /* AllMeetingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllMeetingsViewController.swift; sourceTree = "<group>"; };
+		9D5C388C1BB820F800A69FF3 /* ThemeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
+		9D5E49D11B6E2D4F0079952A /* NSDate+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Extensions.swift"; sourceTree = "<group>"; };
+		9D5E49D31B6E2DBC0079952A /* RemindersTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RemindersTableViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9D6A41EC1B5F218500E8B558 /* BounceAnimatorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = BounceAnimatorController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9D6A41EE1B5F21C700E8B558 /* MeetingDataTitleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MeetingDataTitleViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9D6A41F01B5F23F400E8B558 /* DimmingPresentationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = DimmingPresentationViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9D6A41F21B5F246000E8B558 /* SlideOutAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SlideOutAnimationController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9D6A41F41B5F249F00E8B558 /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = GradientView.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9D6A960D1B6E7C1E00FB3262 /* VenueTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = VenueTableViewCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9D6A960F1B6E83B700FB3262 /* Venue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Venue.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9D6BD6661B69479600A70E70 /* ParentlocationCategoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParentlocationCategoryTableViewCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9D6BD6681B6952A500A70E70 /* NestedlocationCategoryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NestedlocationCategoryCollectionViewCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9D6BD66A1B69533500A70E70 /* NestedCategoriesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NestedCategoriesViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9D6BF8391BBFBD4300D5E6A2 /* PhotoViewerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoViewerViewController.swift; sourceTree = "<group>"; };
+		9D76D9B31B88B9B9000CC2B7 /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Client.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9D76D9B61B88BB16000CC2B7 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Constants.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9D76D9B81B88BF8B000CC2B7 /* FoursquareConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FoursquareConvenience.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9D7874E71B82D63700B798DF /* MyContactPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MyContactPickerView.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9D8832AE1BAA51B4007DCF30 /* AddressBookClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressBookClient.swift; sourceTree = "<group>"; };
+		9D8A7F161BB7A88B001C4F6B /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		9D8A7F181BB7B61E001C4F6B /* MeetingInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeetingInfoViewController.swift; sourceTree = "<group>"; };
+		9D8A7F1A1BB809A9001C4F6B /* ContactTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
+		9D8A7F1B1BB809A9001C4F6B /* ContactTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactTableViewCell.xib; sourceTree = "<group>"; };
+		9D932EA41B67C8200017544F /* LcationCategoriesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LcationCategoriesViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9D932EA61B67C87F0017544F /* FoursquareClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FoursquareClient.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9D932EA91B67E4CF0017544F /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		9D932EAB1B67E5AA0017544F /* CoreDataStackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = CoreDataStackManager.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9D932EAD1B67E7250017544F /* Locationcategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Locationcategory.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9D9AA8311B9C3F810059A596 /* VenueImagesCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenueImagesCollectionView.swift; sourceTree = "<group>"; };
+		9D9AA8331B9C6DD90059A596 /* LetsMeet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = LetsMeet.entitlements; sourceTree = "<group>"; };
+		9D9AA8341B9C6E220059A596 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		9D9DA1791B84FD9500CDAD59 /* MyContactPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MyContactPickerViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9DAB19D11BC0F30E001B7162 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		9DAB19D31BC16CAE001B7162 /* MeetingStepsInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeetingStepsInfoViewController.swift; sourceTree = "<group>"; };
+		9DDCE7021B63225100DF228C /* MeetingDateTimeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MeetingDateTimeViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9DE082851BC6FC3A006296F8 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		9DEAACAD1B8E21F400431285 /* SearchLocationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SearchLocationsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9DEE23031BBE4A6500E572BE /* MeetingVenueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeetingVenueViewController.swift; sourceTree = "<group>"; };
+		9DF6563F1B806BBA001DF4F8 /* Meeting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Meeting.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9DF656411B80726C001DF4F8 /* CloudClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = CloudClient.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9D24CFE71B16DFEB00E25AED /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9D9AA8351B9C6E220059A596 /* CloudKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9D24CFFC1B16DFEB00E25AED /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9D24CFE11B16DFEB00E25AED = {
+			isa = PBXGroup;
+			children = (
+				9DE082851BC6FC3A006296F8 /* README */,
+				9D9AA8341B9C6E220059A596 /* CloudKit.framework */,
+				9D24CFEC1B16DFEB00E25AED /* LetsMeet */,
+				9D24D0021B16DFEB00E25AED /* LetsMeetTests */,
+				9D24CFEB1B16DFEB00E25AED /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9D24CFEB1B16DFEB00E25AED /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9D24CFEA1B16DFEB00E25AED /* LetsMeet.app */,
+				9D24CFFF1B16DFEB00E25AED /* LetsMeetTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9D24CFEC1B16DFEB00E25AED /* LetsMeet */ = {
+			isa = PBXGroup;
+			children = (
+				9D9AA8331B9C6DD90059A596 /* LetsMeet.entitlements */,
+				9D76D9B51B88B9C2000CC2B7 /* Networking */,
+				9D5E49D01B6E0FA20079952A /* Title */,
+				9D5E49CF1B6E0F700079952A /* When */,
+				9D5E49CE1B6E0F460079952A /* CoreData */,
+				9D5E49CD1B6E0F1E0079952A /* Animations */,
+				9D5E49CC1B6E0EEE0079952A /* Venue */,
+				9D50790A1B6CEE8B007D8CBA /* Contacts */,
+				9D24CFEF1B16DFEB00E25AED /* AppDelegate.swift */,
+				9D24CFF31B16DFEB00E25AED /* Main.storyboard */,
+				9D24CFF61B16DFEB00E25AED /* Images.xcassets */,
+				9D24CFF81B16DFEB00E25AED /* LaunchScreen.xib */,
+				9D24CFED1B16DFEB00E25AED /* Supporting Files */,
+				9D1097A81B7F381200C294F8 /* LandingViewController.swift */,
+				9D55C1A01BB64F48005290EB /* AllMeetingsViewController.swift */,
+				9D0FEC541BB6795400A0AF3E /* MeetingCell.swift */,
+				9D8A7F161BB7A88B001C4F6B /* SettingsViewController.swift */,
+				9D8A7F181BB7B61E001C4F6B /* MeetingInfoViewController.swift */,
+				9D5C388C1BB820F800A69FF3 /* ThemeManager.swift */,
+				9D6BF8391BBFBD4300D5E6A2 /* PhotoViewerViewController.swift */,
+				9DAB19D11BC0F30E001B7162 /* MapViewController.swift */,
+				9DAB19D31BC16CAE001B7162 /* MeetingStepsInfoViewController.swift */,
+			);
+			path = LetsMeet;
+			sourceTree = "<group>";
+		};
+		9D24CFED1B16DFEB00E25AED /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9D24CFEE1B16DFEB00E25AED /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9D24D0021B16DFEB00E25AED /* LetsMeetTests */ = {
+			isa = PBXGroup;
+			children = (
+				9D24D0051B16DFEB00E25AED /* LetsMeetTests.swift */,
+				9D24D0031B16DFEB00E25AED /* Supporting Files */,
+			);
+			path = LetsMeetTests;
+			sourceTree = "<group>";
+		};
+		9D24D0031B16DFEB00E25AED /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9D24D0041B16DFEB00E25AED /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9D49AA3F1B8241490025C80C /* ContactsNewStyle */ = {
+			isa = PBXGroup;
+			children = (
+				9D8A7F1A1BB809A9001C4F6B /* ContactTableViewCell.swift */,
+				9D8A7F1B1BB809A9001C4F6B /* ContactTableViewCell.xib */,
+				9D5079471B6D104E007D8CBA /* Contact.swift */,
+				9D49AA3D1B8240370025C80C /* ContactBubbleStyle.swift */,
+				9D49AA401B82416C0025C80C /* ContactTextField.swift */,
+				9D49AA421B8248C80025C80C /* ContactView.swift */,
+				9D7874E71B82D63700B798DF /* MyContactPickerView.swift */,
+				9D9DA1791B84FD9500CDAD59 /* MyContactPickerViewController.swift */,
+			);
+			name = ContactsNewStyle;
+			sourceTree = "<group>";
+		};
+		9D50790A1B6CEE8B007D8CBA /* Contacts */ = {
+			isa = PBXGroup;
+			children = (
+				9D49AA3F1B8241490025C80C /* ContactsNewStyle */,
+			);
+			name = Contacts;
+			sourceTree = "<group>";
+		};
+		9D5E49CC1B6E0EEE0079952A /* Venue */ = {
+			isa = PBXGroup;
+			children = (
+				9D6BD6661B69479600A70E70 /* ParentlocationCategoryTableViewCell.swift */,
+				9D6BD66A1B69533500A70E70 /* NestedCategoriesViewController.swift */,
+				9D6BD6681B6952A500A70E70 /* NestedlocationCategoryCollectionViewCell.swift */,
+				9D932EA41B67C8200017544F /* LcationCategoriesViewController.swift */,
+				9D6A960D1B6E7C1E00FB3262 /* VenueTableViewCell.swift */,
+				9DEAACAD1B8E21F400431285 /* SearchLocationsViewController.swift */,
+				9D9AA8311B9C3F810059A596 /* VenueImagesCollectionView.swift */,
+				9DEE23031BBE4A6500E572BE /* MeetingVenueViewController.swift */,
+			);
+			name = Venue;
+			sourceTree = "<group>";
+		};
+		9D5E49CD1B6E0F1E0079952A /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				9D6A41F01B5F23F400E8B558 /* DimmingPresentationViewController.swift */,
+				9D6A41F41B5F249F00E8B558 /* GradientView.swift */,
+				9D6A41F21B5F246000E8B558 /* SlideOutAnimationController.swift */,
+				9D6A41EC1B5F218500E8B558 /* BounceAnimatorController.swift */,
+			);
+			name = Animations;
+			sourceTree = "<group>";
+		};
+		9D5E49CE1B6E0F460079952A /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				9DF6563F1B806BBA001DF4F8 /* Meeting.swift */,
+				9D932EAD1B67E7250017544F /* Locationcategory.swift */,
+				9D932EA81B67E4CF0017544F /* Model.xcdatamodeld */,
+				9D932EAB1B67E5AA0017544F /* CoreDataStackManager.swift */,
+				9DF656411B80726C001DF4F8 /* CloudClient.swift */,
+				9D6A960F1B6E83B700FB3262 /* Venue.swift */,
+				9D8832AE1BAA51B4007DCF30 /* AddressBookClient.swift */,
+			);
+			name = CoreData;
+			sourceTree = "<group>";
+		};
+		9D5E49CF1B6E0F700079952A /* When */ = {
+			isa = PBXGroup;
+			children = (
+				9D5E49D11B6E2D4F0079952A /* NSDate+Extensions.swift */,
+				9DDCE7021B63225100DF228C /* MeetingDateTimeViewController.swift */,
+				9D5E49D31B6E2DBC0079952A /* RemindersTableViewController.swift */,
+			);
+			name = When;
+			sourceTree = "<group>";
+		};
+		9D5E49D01B6E0FA20079952A /* Title */ = {
+			isa = PBXGroup;
+			children = (
+				9D6A41EE1B5F21C700E8B558 /* MeetingDataTitleViewController.swift */,
+			);
+			name = Title;
+			sourceTree = "<group>";
+		};
+		9D76D9B51B88B9C2000CC2B7 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				9D76D9B31B88B9B9000CC2B7 /* Client.swift */,
+				9D76D9B61B88BB16000CC2B7 /* Constants.swift */,
+				9D932EA61B67C87F0017544F /* FoursquareClient.swift */,
+				9D76D9B81B88BF8B000CC2B7 /* FoursquareConvenience.swift */,
+			);
+			name = Networking;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9D24CFE91B16DFEB00E25AED /* LetsMeet */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9D24D0091B16DFEB00E25AED /* Build configuration list for PBXNativeTarget "LetsMeet" */;
+			buildPhases = (
+				9D24CFE61B16DFEB00E25AED /* Sources */,
+				9D24CFE71B16DFEB00E25AED /* Frameworks */,
+				9D24CFE81B16DFEB00E25AED /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LetsMeet;
+			productName = LetsMeet;
+			productReference = 9D24CFEA1B16DFEB00E25AED /* LetsMeet.app */;
+			productType = "com.apple.product-type.application";
+		};
+		9D24CFFE1B16DFEB00E25AED /* LetsMeetTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9D24D00C1B16DFEB00E25AED /* Build configuration list for PBXNativeTarget "LetsMeetTests" */;
+			buildPhases = (
+				9D24CFFB1B16DFEB00E25AED /* Sources */,
+				9D24CFFC1B16DFEB00E25AED /* Frameworks */,
+				9D24CFFD1B16DFEB00E25AED /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9D24D0011B16DFEB00E25AED /* PBXTargetDependency */,
+			);
+			name = LetsMeetTests;
+			productName = LetsMeetTests;
+			productReference = 9D24CFFF1B16DFEB00E25AED /* LetsMeetTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9D24CFE21B16DFEB00E25AED /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0630;
+				ORGANIZATIONNAME = "ShapeMyApp Software Solutions Pvt. Ltd.";
+				TargetAttributes = {
+					9D24CFE91B16DFEB00E25AED = {
+						CreatedOnToolsVersion = 6.3.2;
+						DevelopmentTeam = S4K9S7549E;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
+					};
+					9D24CFFE1B16DFEB00E25AED = {
+						CreatedOnToolsVersion = 6.3.2;
+						TestTargetID = 9D24CFE91B16DFEB00E25AED;
+					};
+				};
+			};
+			buildConfigurationList = 9D24CFE51B16DFEB00E25AED /* Build configuration list for PBXProject "LetsMeet" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9D24CFE11B16DFEB00E25AED;
+			productRefGroup = 9D24CFEB1B16DFEB00E25AED /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9D24CFE91B16DFEB00E25AED /* LetsMeet */,
+				9D24CFFE1B16DFEB00E25AED /* LetsMeetTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9D24CFE81B16DFEB00E25AED /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9DE082861BC6FC3B006296F8 /* README in Resources */,
+				9D24CFF51B16DFEB00E25AED /* Main.storyboard in Resources */,
+				9D24CFFA1B16DFEB00E25AED /* LaunchScreen.xib in Resources */,
+				9D8A7F1D1BB809A9001C4F6B /* ContactTableViewCell.xib in Resources */,
+				9D24CFF71B16DFEB00E25AED /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9D24CFFD1B16DFEB00E25AED /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9D24CFE61B16DFEB00E25AED /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9D6A41ED1B5F218500E8B558 /* BounceAnimatorController.swift in Sources */,
+				9D49AA431B8248C80025C80C /* ContactView.swift in Sources */,
+				9D5E49D41B6E2DBC0079952A /* RemindersTableViewController.swift in Sources */,
+				9D0FEC551BB6795400A0AF3E /* MeetingCell.swift in Sources */,
+				9DAB19D41BC16CAE001B7162 /* MeetingStepsInfoViewController.swift in Sources */,
+				9D9DA17A1B84FD9500CDAD59 /* MyContactPickerViewController.swift in Sources */,
+				9D8A7F191BB7B61F001C4F6B /* MeetingInfoViewController.swift in Sources */,
+				9D932EA71B67C87F0017544F /* FoursquareClient.swift in Sources */,
+				9DEE23041BBE4A6500E572BE /* MeetingVenueViewController.swift in Sources */,
+				9D49AA411B82416C0025C80C /* ContactTextField.swift in Sources */,
+				9D49AA3E1B8240370025C80C /* ContactBubbleStyle.swift in Sources */,
+				9DAB19D21BC0F30E001B7162 /* MapViewController.swift in Sources */,
+				9D6BD66B1B69533500A70E70 /* NestedCategoriesViewController.swift in Sources */,
+				9D24CFF01B16DFEB00E25AED /* AppDelegate.swift in Sources */,
+				9D5079481B6D104E007D8CBA /* Contact.swift in Sources */,
+				9D8A7F171BB7A88B001C4F6B /* SettingsViewController.swift in Sources */,
+				9DDCE7031B63225100DF228C /* MeetingDateTimeViewController.swift in Sources */,
+				9DF656401B806BBA001DF4F8 /* Meeting.swift in Sources */,
+				9D5E49D21B6E2D4F0079952A /* NSDate+Extensions.swift in Sources */,
+				9D6A41EF1B5F21C700E8B558 /* MeetingDataTitleViewController.swift in Sources */,
+				9D5C388D1BB820F800A69FF3 /* ThemeManager.swift in Sources */,
+				9D7874E81B82D63700B798DF /* MyContactPickerView.swift in Sources */,
+				9D6A41F51B5F249F00E8B558 /* GradientView.swift in Sources */,
+				9D932EA51B67C8200017544F /* LcationCategoriesViewController.swift in Sources */,
+				9DF656421B80726C001DF4F8 /* CloudClient.swift in Sources */,
+				9D6A960E1B6E7C1E00FB3262 /* VenueTableViewCell.swift in Sources */,
+				9DEAACAE1B8E21F400431285 /* SearchLocationsViewController.swift in Sources */,
+				9D76D9B91B88BF8B000CC2B7 /* FoursquareConvenience.swift in Sources */,
+				9D6BD6671B69479600A70E70 /* ParentlocationCategoryTableViewCell.swift in Sources */,
+				9D6BD6691B6952A500A70E70 /* NestedlocationCategoryCollectionViewCell.swift in Sources */,
+				9D76D9B41B88B9B9000CC2B7 /* Client.swift in Sources */,
+				9D932EAC1B67E5AA0017544F /* CoreDataStackManager.swift in Sources */,
+				9D932EAE1B67E7250017544F /* Locationcategory.swift in Sources */,
+				9D1097A91B7F381200C294F8 /* LandingViewController.swift in Sources */,
+				9D6A96101B6E83B700FB3262 /* Venue.swift in Sources */,
+				9D6A41F11B5F23F400E8B558 /* DimmingPresentationViewController.swift in Sources */,
+				9D55C1A11BB64F48005290EB /* AllMeetingsViewController.swift in Sources */,
+				9D6A41F31B5F246000E8B558 /* SlideOutAnimationController.swift in Sources */,
+				9D76D9B71B88BB16000CC2B7 /* Constants.swift in Sources */,
+				9D8A7F1C1BB809A9001C4F6B /* ContactTableViewCell.swift in Sources */,
+				9D932EAA1B67E4CF0017544F /* Model.xcdatamodeld in Sources */,
+				9D8832AF1BAA51B4007DCF30 /* AddressBookClient.swift in Sources */,
+				9D9AA8321B9C3F810059A596 /* VenueImagesCollectionView.swift in Sources */,
+				9D6BF83A1BBFBD4300D5E6A2 /* PhotoViewerViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9D24CFFB1B16DFEB00E25AED /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9D24D0061B16DFEB00E25AED /* LetsMeetTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9D24D0011B16DFEB00E25AED /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9D24CFE91B16DFEB00E25AED /* LetsMeet */;
+			targetProxy = 9D24D0001B16DFEB00E25AED /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		9D24CFF31B16DFEB00E25AED /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9D24CFF41B16DFEB00E25AED /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		9D24CFF81B16DFEB00E25AED /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9D24CFF91B16DFEB00E25AED /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9D24D0071B16DFEB00E25AED /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9D24D0081B16DFEB00E25AED /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9D24D00A1B16DFEB00E25AED /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = LetsMeet/LetsMeet.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = LetsMeet/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+			};
+			name = Debug;
+		};
+		9D24D00B1B16DFEB00E25AED /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = LetsMeet/LetsMeet.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = LetsMeet/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+			};
+			name = Release;
+		};
+		9D24D00D1B16DFEB00E25AED /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = LetsMeetTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LetsMeet.app/LetsMeet";
+			};
+			name = Debug;
+		};
+		9D24D00E1B16DFEB00E25AED /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = LetsMeetTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LetsMeet.app/LetsMeet";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9D24CFE51B16DFEB00E25AED /* Build configuration list for PBXProject "LetsMeet" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9D24D0071B16DFEB00E25AED /* Debug */,
+				9D24D0081B16DFEB00E25AED /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9D24D0091B16DFEB00E25AED /* Build configuration list for PBXNativeTarget "LetsMeet" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9D24D00A1B16DFEB00E25AED /* Debug */,
+				9D24D00B1B16DFEB00E25AED /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9D24D00C1B16DFEB00E25AED /* Build configuration list for PBXNativeTarget "LetsMeetTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9D24D00D1B16DFEB00E25AED /* Debug */,
+				9D24D00E1B16DFEB00E25AED /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		9D932EA81B67E4CF0017544F /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				9D932EA91B67E4CF0017544F /* Model.xcdatamodel */,
+			);
+			currentVersion = 9D932EA91B67E4CF0017544F /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 9D24CFE21B16DFEB00E25AED /* Project object */;
+}

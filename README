@@ -1,0 +1,104 @@
+**************   Let’s Meet *************************
+Category of application: Social Networking
+
+Motivation: We all love to meet our friends in person. We are having friends who share common interests with us. We want to go out with family for social functions. "Let’s meet" will not allow you to miss your friends when you want to go for pool party or you want to hang out with your friends for dinner.
+You will create a hang out session using this app. You search the different places of interest based on various categories, invite your friends to this meet, set a reminder and add description about the place or event. The participant of this meeting will get notification when you invite them and can see the events listed in the application.
+
+--------------------------------------------------------------------------------------------------------------
+Installation Requirement and Guidelines:
+--------------------------------------------------------------------------------------------------------------
+Xcode: 6.4
+iOS SDK : 8.4
+
+iPhone device family: iPhone 5, iPhone 5c, iPhone 5s, iPhone 6, iPhone 6 Plus
+
+Application uses iCloud to save data, find contacts and send Notifications.
+
+This application requires the device to have iCloud account set up, which is done by following steps:
+Go to Settings -> iCloud ->  Login with your iCloud Id (https://www.icloud.com)
+Once you set up iCloud account, Let’s Meet application will take few minutes to retrieve iCloud user information.
+
+It requires below capabilities on :  ( Settings ->  Let’s Meet)
+Location Services
+Address book Contacts
+Notifications
+Background App Refresh
+For iCloud : (Settings -> iCloud -> iCloud Drive (On) -> Let’s Meet)
+
+iCloud fetches contacts from your address book who have installed Let’s Meet Application and have logged in to iCloud using their iCloud Id (as described above in the Settings screen);
+
+Creating meeting requires participants. To retrieve participants from your contact list,
+Login to iCloud in Settings screen in each device.
+Add these users in your Address book of each other with their iCloud mail address in the contact detail.
+Install Lets meet application to 2 or 3 iPhone devices.
+--------------------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------------------
+Functional Specifications:
+--------------------------------------------------------------------------------------------------------------
+
+Tab 1: Create A Meeting / Hangout
+Steps to create a new meeting:
+In the first tab (Create Meeting Screen)
+Add title for the meeting
+Write contact name in the Add Participants view
+Search City or Select current location (for e.g. New York, Washington, Tokyo, Brisbane) -> After Place is selected ->
+Write the interest for which you want to have a  hangout or meeting (for e.g. Museum,Art gallery, Sports, Lunch, Dinner, Coffee) -> Search Location will give you the places from the above combination
+Select the place you want for your hang out or meeting.
+4. Select Date and time for the meeting
+5. Set the Reminder for this meeting
+
+When all of the above fields are selected, Create Meeting Button will be enabled and tap on which creates the Meeting and sends notifications to the participants you have selected for the meeting.
+
+Tab 2: All Meetings Screen
+This screen lists down all the meetings created by you and meetings in which you are participants.
+Selecting single meeting row will open a detail screen to show the meeting information with all the data.
+The detail screen also shows map and tap on Map allows you to check Map in detail with zoom and scroll.
+This screen also shows images of the location in Gallery and selecting each image will be opened in a new screen to check the image by zooming and scrolling.
+
+Tab 3: About Let’s Meet Screen
+This screen shows user’s iCloud login information (like First name and last name , whether user has logged in or not).
+It gives the option to share feedback of this app with your friends.
+--------------------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------------------
+Technical Specifications:
+--------------------------------------------------------------------------------------------------------------
+
+The application’s user interface has tab view controller with each view controller having navigation controller to go further in the application.
+
+Application uses following UI Controls:
+DatePicker, Textfield, Textview,Label, Button, Bar button, Navigation item prompt, Tab bar, UIImageView, Tableview cell, CollectionView cell, ActivityIndicator, ScrollView, MapKitView, Tap gesture, UIActivityViewController
+
+Contact Picker is Custom control made with textfield and tableview.
+Table view cell and collection view cell are customised for different views across application.
+
+Foursquare and iCloud networks are used to get and store data.
+Application uses Foursquare API to search locations and get categories in JSON format which are then parsed to Data model.
+Application uses iCloud to save data, get contacts and send notifications.
+
+The networking code for Foursquare API, iCloud Client are encapsulated in different classes with shared Instance for each.
+Each networked activity is showing progress by UIActivityIndicator.
+When there is no network connectivity, user is updated with the friendly message in Alert or message label.
+
+Application uses persistent data storage mechanism by using Core Data and
+NSKeyedArchiver.
+iCloud also contains data storage with relation mapping between Meeting , Venue and Users entities.
+
+Model classes
+App has model class for each entity and Objects like Meeting, Category, Venue , with
+collections of objects and initialisers.
+
+Application shows local notification for reminders and push notification when new meeting is created.
+
+Animations are kept in place for modal presentation of View controllers.
+
+It uses following API:
+CloudKit
+Core Data
+Core Location
+MapKit
+Foundation
+UIKit
+Addressbook
+--------------------------------------------------------------------------------------------------------------
