@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>D36CB0A6-AC8B-49AB-87BA-FB5EE4BCC05B</string>
+	<key>IDESourceControlProjectName</key>
+	<string>LetsMeet</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>8AE3728018F2A9AECB8CF72D963CC697031F4CC2</key>
+		<string>https://github.com/shruti111/LetsMeet.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>LetsMeet.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>8AE3728018F2A9AECB8CF72D963CC697031F4CC2</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/shruti111/LetsMeet.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>8AE3728018F2A9AECB8CF72D963CC697031F4CC2</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>8AE3728018F2A9AECB8CF72D963CC697031F4CC2</string>
+			<key>IDESourceControlWCCName</key>
+			<string>LetsMeet</string>
+		</dict>
+	</array>
+</dict>
+</plist>
