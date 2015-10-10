@@ -128,6 +128,7 @@ class AddressBookClient: NSObject {
                 userInfo, error in
                 
                 if userInfo != nil && error == nil {
+                    println(userInfo)
                     emailContact.cloudRecordId = userInfo.userRecordID.recordName
                     self.contacts.append(emailContact)
                     println(userInfo.userRecordID.recordName)

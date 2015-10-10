@@ -391,7 +391,7 @@
                         <viewControllerLayoutGuide type="bottom" id="cin-FM-Ef8"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Tpj-5Y-L5B">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r8R-UN-m4e">
@@ -2232,24 +2232,6 @@
             </objects>
             <point key="canvasLocation" x="-243" y="2076"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="Ogg-Ii-MSx">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="HXJ-eV-1Ag" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="zWD-vg-Vjc">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="GEI-Au-str" kind="relationship" relationship="rootViewController" id="Iqy-qN-eQe"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="8nu-yt-wnJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1180" y="1422"/>
-        </scene>
     </scenes>
     <resources>
         <image name="appSettings" width="25" height="25"/>
@@ -2273,7 +2255,6 @@
         <image name="twitter" width="40" height="33"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="TbP-q2-8mL"/>
         <segue reference="uZa-Q2-23P"/>
         <segue reference="GnW-lx-VPt"/>
     </inferredMetricsTieBreakers>
