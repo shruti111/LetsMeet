@@ -116,7 +116,6 @@
 		9D932EAB1B67E5AA0017544F /* CoreDataStackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = CoreDataStackManager.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		9D932EAD1B67E7250017544F /* Locationcategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Locationcategory.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		9D9AA8311B9C3F810059A596 /* VenueImagesCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenueImagesCollectionView.swift; sourceTree = "<group>"; };
-		9D9AA8331B9C6DD90059A596 /* LetsMeet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = LetsMeet.entitlements; sourceTree = "<group>"; };
 		9D9AA8341B9C6E220059A596 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		9D9DA1791B84FD9500CDAD59 /* MyContactPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MyContactPickerViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		9DAB19D11BC0F30E001B7162 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
@@ -171,7 +170,6 @@
 		9D24CFEC1B16DFEB00E25AED /* LetsMeet */ = {
 			isa = PBXGroup;
 			children = (
-				9D9AA8331B9C6DD90059A596 /* LetsMeet.entitlements */,
 				9D76D9B51B88B9C2000CC2B7 /* Networking */,
 				9D5E49D01B6E0FA20079952A /* Title */,
 				9D5E49CF1B6E0F700079952A /* When */,
@@ -364,10 +362,9 @@
 				TargetAttributes = {
 					9D24CFE91B16DFEB00E25AED = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = S4K9S7549E;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
-								enabled = 1;
+								enabled = 0;
 							};
 							com.apple.iCloud = {
 								enabled = 1;
