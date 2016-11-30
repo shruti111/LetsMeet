@@ -24,11 +24,11 @@ func landingScreenFilledButtonColor() -> UIColor {
     return UIColor(red: 255/255, green: 97/255, blue: 60/255, alpha: 0.8)
 }
 func landingScreenButtonColor() -> UIColor {
-   return UIColor.clearColor()
+   return UIColor.clear
 }
 
 func landingScreenFilledButtonTintColor() -> UIColor {
-    return UIColor.whiteColor()
+    return UIColor.white
 }
 
 func dateTimeLabelBackgroundColor() -> UIColor {
@@ -40,7 +40,7 @@ func collectionViewBorderGreyColor() -> UIColor {
 }
 
 func emptyDatamessageColor() -> UIColor {
-    return UIColor.redColor()
+    return UIColor.red
 }
 
 //MARK:- Application Font
@@ -49,7 +49,7 @@ func messageLabelFont() -> UIFont {
     if let palatinoFont = UIFont(name: "Palatino-Italic" , size: 20) {
         return palatinoFont
     } else {
-        return UIFont.systemFontOfSize(20)
+        return UIFont.systemFont(ofSize: 20)
     }
 }
 
@@ -57,7 +57,7 @@ func tableViewCellSmallLabelFont() -> UIFont {
     if let avenirFont = UIFont(name: "AvenirNext-Medium", size: 14) {
         return avenirFont
     } else {
-        return UIFont.systemFontOfSize(14)
+        return UIFont.systemFont(ofSize: 14)
     }
 }
 
@@ -65,7 +65,7 @@ func tableViewCellLabelFont() -> UIFont {
     if let avenirFont = UIFont(name: "AvenirNext-Medium", size: 15) {
         return avenirFont
     } else {
-        return UIFont.systemFontOfSize(15)
+        return UIFont.systemFont(ofSize: 15)
     }
 }
 
@@ -73,7 +73,7 @@ func tableViewCellLabelMediumFont() -> UIFont {
     if let avenirFont = UIFont(name: "AvenirNext-Medium", size: 16) {
         return avenirFont
     } else {
-        return UIFont.systemFontOfSize(16)
+        return UIFont.systemFont(ofSize: 16)
     }
 }
 
@@ -81,7 +81,7 @@ func tableViewCellLabelMediumLocationFont() -> UIFont {
     if let avenirFont = UIFont(name: "AvenirNext-Medium", size: 17) {
         return avenirFont
     } else {
-        return UIFont.systemFontOfSize(17)
+        return UIFont.systemFont(ofSize: 17)
     }
 }
 
@@ -90,7 +90,7 @@ func tableViewCellLabelBigFont() -> UIFont {
     if let avenirFont = UIFont(name: "AvenirNext-Medium", size: 22) {
         return avenirFont
     } else {
-        return UIFont.systemFontOfSize(22)
+        return UIFont.systemFont(ofSize: 22)
     }
 }
 

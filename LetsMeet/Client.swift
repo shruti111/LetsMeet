@@ -11,16 +11,16 @@ import Foundation
 class Client : NSObject {
     
     /* Shared session */
-    var session: NSURLSession
+    var session: URLSession
     
     override init() {
-        session = NSURLSession.sharedSession()
+        session = URLSession.shared
         super.init()
     }
     
     // MARK: - GET
     
-    func taskForGETMethod(method: String, parameters: [String : AnyObject]? = nil, headerParameters: [String:String]? = nil, completionHandler: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
+    func taskForGETMethod(_ method: String, parameters: [String : String]? = nil, headerParameters: [String:String]? = nil, completionHandler: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
         
         //Build the URL and configure the request
         
@@ -32,18 +32,17 @@ class Client : NSObject {
         // Add parameters
         
         urlString = parameters != nil ? urlString + Client.escapedParameters(parameters!) : urlString
-        let url = NSURL(string: urlString)!
-        let request = NSMutableURLRequest(URL: url)
+        let url = URL(string: urlString)!
+        let request = NSMutableURLRequest(url: url)
         
         // Make the request
-        
-        let task = session.dataTaskWithRequest(request) {data, response, downloadError in
+        let task = session.dataTask(with: request as URLRequest, completionHandler: {data, response, downloadError in
             
             // Set up the error (if any)
             
             if let error = downloadError {
-                let newError = Client.errorForNetworkConnection(error)
-                completionHandler(result: nil, error: newError)
+                let newError = Client.errorForNetworkConnection(error as NSError)
+                completionHandler(nil, newError)
                 
             } else {
                 
@@ -52,7 +51,7 @@ class Client : NSObject {
                     Client.parseJSONWithCompletionHandler(data!, completionHandler: completionHandler)
                 }
             }
-        }
+        }) 
         
         // Start request
         task.resume()
@@ -61,7 +60,7 @@ class Client : NSObject {
     }
     
     
-    func loadImage(method: String, parameters: [String : AnyObject]? = nil, completionHandler: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDownloadTask {
+    func loadImage(_ method: String, parameters: [String : String]? = nil, completionHandler: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDownloadTask {
         
         //Build the URL and configure the request
         
@@ -74,14 +73,14 @@ class Client : NSObject {
         
         urlString = parameters != nil ? urlString + Client.escapedParameters(parameters!) : urlString
         
-         let imageurl = NSURL(string: urlString)!
+         let imageurl = URL(string: urlString)!
 
-        let downloadtask = session.downloadTaskWithURL(imageurl, completionHandler: {
+        let downloadtask = session.downloadTask(with: imageurl, completionHandler: {
             url, response, error in
             
             if error == nil && url != nil {
-                if let data = NSData(contentsOfURL: url!) {
-                    completionHandler(result: data, error: nil)
+                if let data = try? Data(contentsOf: url!) {
+                    completionHandler(data as AnyObject?, nil)
                 }
             }
             
@@ -92,28 +91,39 @@ class Client : NSObject {
     
     /* Helper: Given raw JSON, return a usable Foundation object */
     
-    class func parseJSONWithCompletionHandler(data: NSData, completionHandler: (result: AnyObject!, error: NSError?) -> Void) {
+    class func parseJSONWithCompletionHandler(_ data: Data, completionHandler: (_ result: AnyObject?, _ error: NSError?) -> Void) {
         
-        var newData: NSData = data
+        var newData: Data = data
         
         var parsingError: NSError? = nil
-        
-        let parsedResult: AnyObject? = NSJSONSerialization.JSONObjectWithData(newData, options: NSJSONReadingOptions.AllowFragments, error: &parsingError)
-        
-        if let error = parsingError {
-            
-            // Set up the domain and code for the error
+        do {
+
+       let parsedResult = try JSONSerialization.jsonObject(with: newData, options: JSONSerialization.ReadingOptions.allowFragments)
+            completionHandler(parsedResult as AnyObject?, nil)
+
+        }catch {
             let userInfo = [NSLocalizedDescriptionKey : "Internal Error getting data. Please try again later."]
             let newError = NSError(domain: "LetsMeet ParsingError", code: 30, userInfo: userInfo)
             
-            completionHandler(result: nil, error: error)
-        } else {
-            completionHandler(result: parsedResult, error: nil)
+            completionHandler(nil, newError)
         }
+        
+//        let parsedResult: AnyObject? = JSONSerialization.JSONObjectWithData(newData, options: JSONSerialization.ReadingOptions.AllowFragments, error: &parsingError)
+//        
+//        if let error = parsingError {
+//            
+//            // Set up the domain and code for the error
+//            let userInfo = [NSLocalizedDescriptionKey : "Internal Error getting data. Please try again later."]
+//            let newError = NSError(domain: "LetsMeet ParsingError", code: 30, userInfo: userInfo)
+//            
+//            completionHandler(nil, error)
+//        } else {
+//            completionHandler(parsedResult, nil)
+//        }
     }
     
     /* Helper function: Given a dictionary of parameters, convert to a string for a url */
-    class func escapedParameters(parameters: [String : AnyObject]) -> String {
+    class func escapedParameters(_ parameters: [String : String]) -> String {
         
         var urlVars = [String]()
         
@@ -123,21 +133,22 @@ class Client : NSObject {
             let stringValue = "\(value)"
             
             /* Escape it */
-            let escapedValue = stringValue.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
+            let escapedValue = stringValue.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
             
             /* Append it */
             urlVars += [key + "=" + "\(escapedValue!)"]
             
         }
         
-        return (!urlVars.isEmpty ? "?" : "") + join("&", urlVars)
+        return (!urlVars.isEmpty ? "?" : "") + urlVars.joined(separator: "&")
+            //join("&", urlVars)
     }
     
     /* Helper: Substitute the key for the value that is contained within the method name */
     
-    class func subtituteKeyInMethod(method: String, key: String, value: String) -> String? {
-        if method.rangeOfString("{\(key)}") != nil {
-            return method.stringByReplacingOccurrencesOfString("{\(key)}", withString: value)
+    class func subtituteKeyInMethod(_ method: String, key: String, value: String) -> String? {
+        if method.range(of: "{\(key)}") != nil {
+            return method.replacingOccurrences(of: "{\(key)}", with: value)
         } else {
             return nil
         }
@@ -145,7 +156,7 @@ class Client : NSObject {
     
     /* Helper: method to return Network error */
     
-    class func errorForNetworkConnection(error:NSError) -> NSError {
+    class func errorForNetworkConnection(_ error:NSError) -> NSError {
         
         let userInfo = [NSLocalizedDescriptionKey : error.localizedDescription]
         // Set the domain and code for the errro

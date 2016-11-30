@@ -14,7 +14,7 @@ class NestedlocationCategoryCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var categoryName: UILabel!
     
     // Cancel download task when collection view cell is reused
-    var taskToCancelifCellIsReused: NSURLSessionTask? {
+    var taskToCancelifCellIsReused: URLSessionTask? {
         
         didSet {
             if let taskToCancel = oldValue {
@@ -28,7 +28,7 @@ class NestedlocationCategoryCollectionViewCell: UICollectionViewCell {
         
         // Set collection view with rounded corner
         self.layer.cornerRadius = 5
-        self.layer.borderColor = collectionViewBorderGreyColor().CGColor
+        self.layer.borderColor = collectionViewBorderGreyColor().cgColor
         self.layer.borderWidth = 1.0
         
     }

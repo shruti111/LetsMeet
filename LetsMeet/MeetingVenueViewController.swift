@@ -44,7 +44,7 @@ class MeetingVenueViewController: UIViewController, CLLocationManagerDelegate, U
     var cityName:String?
     var lastLocationError: NSError?
     var lastGeocodingError: NSError?
-    var timer: NSTimer?
+    var timer: Timer?
     var locationsArray:Array<Venue>?
     
     override func viewDidLoad() {
@@ -54,10 +54,10 @@ class MeetingVenueViewController: UIViewController, CLLocationManagerDelegate, U
         searchPlaceTextField.delegate = self
     }
 
-    @IBAction func getUserCurrentLocation(sender: UIButton) {
+    @IBAction func getUserCurrentLocation(_ sender: UIButton) {
         
         //Hide error label
-        self.errorLabel.hidden = true
+        self.errorLabel.isHidden = true
         self.cityNameTextField.text = nil
         
         if updatingLocation {
@@ -69,75 +69,76 @@ class MeetingVenueViewController: UIViewController, CLLocationManagerDelegate, U
             lastGeocodingError = nil
             
             // Disable all controls
-            cityNameTextField.enabled = false
-            searchCityOnmapButton.enabled = false
-            getCurrentLocationButton.enabled = false
-            nextButton.enabled = false
+            cityNameTextField.isEnabled = false
+            searchCityOnmapButton.isEnabled = false
+            getCurrentLocationButton.isEnabled = false
+            nextButton.isEnabled = false
             
             startLocationManager()
         }
     }
 
-    @IBAction func findUserEnteredLocation(sender: UIButton) {
-        
-        if !(count(self.cityNameTextField!.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())) > 0) {
-            self.errorLabel.hidden = false
+    @IBAction func findUserEnteredLocation(_ sender: UIButton) {
+
+       
+     if !(self.cityNameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines).characters.count > 0) {
+            self.errorLabel.isHidden = false
             self.errorLabel.text = "Place not entered. \n Please enter place name to search."
             return
         }
         
         //Hide error label
-        self.errorLabel.hidden = true
+        self.errorLabel.isHidden = true
         
         // Find location coordinates
         var userEnteredLocation = self.cityNameTextField.text
         
         // Disable all controls
-        cityNameTextField.enabled = false
-        searchCityOnmapButton.enabled = false
-        getCurrentLocationButton.enabled = false
-        nextButton.enabled = false
+        cityNameTextField.isEnabled = false
+        searchCityOnmapButton.isEnabled = false
+        getCurrentLocationButton.isEnabled = false
+        nextButton.isEnabled = false
         
         // activity indicator
         searchLocationActivityIndicator.startAnimating()
         
         // Find coordinates using Geocoding
         
-        geocoder.geocodeAddressString(userEnteredLocation, completionHandler: {
+        geocoder.geocodeAddressString(userEnteredLocation!, completionHandler: {
             placemarks, error in
             
             self.searchLocationActivityIndicator.stopAnimating()
             
             // Enable all controls
-            self.cityNameTextField.enabled = true
-            self.searchCityOnmapButton.enabled = true
-            self.getCurrentLocationButton.enabled = true
+            self.cityNameTextField.isEnabled = true
+            self.searchCityOnmapButton.isEnabled = true
+            self.getCurrentLocationButton.isEnabled = true
             
             
             // Show geocoding error
             if let geoCodeError = error {
                 // If there is a network , find out using CLError Domain
-                if geoCodeError.code == CLError.Network.rawValue {
+                if geoCodeError._code == CLError.Code.network.rawValue {
                      self.errorLabel.text = "Could not connect. \n Please check your internet connection and try again."
                 } else {
-                    self.errorLabel.text = userEnteredLocation + " not found. \n Please re-enter place name to search."
+                    self.errorLabel.text = userEnteredLocation! + " not found. \n Please re-enter place name to search."
                 }
-                 self.errorLabel.hidden = false
-                 self.nextButton.enabled = false
+                 self.errorLabel.isHidden = false
+                 self.nextButton.isEnabled = false
             }
                 
             else {
-                if !placemarks.isEmpty {
-                    self.placemark = placemarks.last as? CLPlacemark
-                    self.locationLattitude = self.placemark?.location.coordinate.latitude
-                    self.locationLongitude = self.placemark?.location.coordinate.longitude
+                if !(placemarks?.isEmpty)! {
+                    self.placemark = placemarks!.last as CLPlacemark?
+                    self.locationLattitude = self.placemark?.location?.coordinate.latitude
+                    self.locationLongitude = self.placemark?.location?.coordinate.longitude
                     self.createStringFromPlacemarkToGetLocationAddress()
                     self.cityNameTextField.text = self.cityName!
-                    self.nextButton.enabled = true
+                    self.nextButton.isEnabled = true
                 } else {
-                    self.errorLabel.text = userEnteredLocation + " not found. \n Please re-enter location to search."
-                    self.errorLabel.hidden = false
-                    self.nextButton.enabled = false
+                    self.errorLabel.text = userEnteredLocation! + " not found. \n Please re-enter location to search."
+                    self.errorLabel.isHidden = false
+                    self.nextButton.isEnabled = false
                 }
                 
             }
@@ -150,7 +151,7 @@ class MeetingVenueViewController: UIViewController, CLLocationManagerDelegate, U
     func createStringFromPlacemarkToGetLocationAddress() {
         if self.placemark!.subAdministrativeArea != nil {
             if self.placemark!.administrativeArea != nil {
-                self.cityName = self.placemark!.subAdministrativeArea + " , " + self.placemark!.administrativeArea
+                self.cityName = self.placemark!.subAdministrativeArea! + " , " + self.placemark!.administrativeArea!
             } else {
                  self.cityName = self.placemark!.subAdministrativeArea
             }
@@ -168,12 +169,12 @@ class MeetingVenueViewController: UIViewController, CLLocationManagerDelegate, U
         
         let authStatus = CLLocationManager.authorizationStatus()
         
-        if authStatus == .NotDetermined {
+        if authStatus == .notDetermined {
             locationManager.requestWhenInUseAuthorization()
             return
         }
         
-        if authStatus == .Denied || authStatus == .Restricted {
+        if authStatus == .denied || authStatus == .restricted {
             showLocationServicesDeniedAlert()
             return
         }
@@ -182,12 +183,12 @@ class MeetingVenueViewController: UIViewController, CLLocationManagerDelegate, U
     func showLocationServicesDeniedAlert() {
         let alert = UIAlertController(title: "Location Services Disabled",
             message: "Please enable location services for this app in Settings.",
-            preferredStyle: .Alert)
+            preferredStyle: .alert)
         
-        let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alert.addAction(okAction)
         
-        presentViewController(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
     
     func startLocationManager() {
@@ -197,7 +198,7 @@ class MeetingVenueViewController: UIViewController, CLLocationManagerDelegate, U
             locationManager.startUpdatingLocation()
             updatingLocation = true
             searchLocationActivityIndicator.startAnimating()
-            timer = NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: Selector("didTimeOut"), userInfo: nil, repeats: false)
+            timer = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(MeetingVenueViewController.didTimeOut), userInfo: nil, repeats: false)
         }
     }
     
@@ -215,11 +216,11 @@ class MeetingVenueViewController: UIViewController, CLLocationManagerDelegate, U
         // Enable all controls
         if placemark != nil {
         self.cityNameTextField.text = self.cityName!
-        self.nextButton.enabled = true
+        self.nextButton.isEnabled = true
         }
-        self.cityNameTextField.enabled = true
-        self.searchCityOnmapButton.enabled = true
-        self.getCurrentLocationButton.enabled = true
+        self.cityNameTextField.isEnabled = true
+        self.searchCityOnmapButton.isEnabled = true
+        self.getCurrentLocationButton.isEnabled = true
     }
     func didTimeOut() {
         if location == nil {
@@ -230,22 +231,22 @@ class MeetingVenueViewController: UIViewController, CLLocationManagerDelegate, U
     
     // MARK: - CLLocationManagerDelegate
     
-    func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
-        println("didFailWithError \(error)")
-        if error.code == CLError.LocationUnknown.rawValue {
+    func locationManager(_ manager: CLLocationManager!, didFailWithError error: Error) {
+        print("didFailWithError \(error)")
+        if error._code == CLError.Code.locationUnknown.rawValue {
             return
         }
-        if error.code == CLError.Denied.rawValue {
+        if error._code == CLError.Code.denied.rawValue {
             errorLabel.text = "Location Services Disabled. \n Please enable location service for this app in Settings."
-            errorLabel.hidden = false
+            errorLabel.isHidden = false
         } else {
             errorLabel.text = "There is an error finding your current location. \n Please try again later."
-            errorLabel.hidden = false
+            errorLabel.isHidden = false
         }
-        lastLocationError = error
+        lastLocationError = error as NSError?
         stopLocationManager()
     }
-    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+    func locationManager(_ manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         
         let newLocation = locations.last as! CLLocation
         
@@ -259,7 +260,7 @@ class MeetingVenueViewController: UIViewController, CLLocationManagerDelegate, U
         
         var distance = CLLocationDistance(DBL_MAX)
         if let location = location {
-            distance = newLocation.distanceFromLocation(location)
+            distance = newLocation.distance(from: location)
         }
         
         if location == nil || location!.horizontalAccuracy > newLocation.horizontalAccuracy {
@@ -278,36 +279,36 @@ class MeetingVenueViewController: UIViewController, CLLocationManagerDelegate, U
             if !performingReverseGeocoding {
                 performingReverseGeocoding = true
                 
-                geocoder.reverseGeocodeLocation(location, completionHandler: {
+                geocoder.reverseGeocodeLocation(location!, completionHandler: {
                     placemarks, error in
                     
                     // If there is a network , find out using CLError Domain
                     
-                    self.lastGeocodingError = error
+                    self.lastGeocodingError = error as NSError?
                     
-                    if error == nil && !placemarks.isEmpty {
-                        self.placemark = placemarks.last as? CLPlacemark
-                        self.locationLattitude = self.placemark?.location.coordinate.latitude
-                        self.locationLongitude = self.placemark?.location.coordinate.longitude
+                    if error == nil && !(placemarks?.isEmpty)! {
+                        self.placemark = placemarks!.last as CLPlacemark?
+                        self.locationLattitude = self.placemark?.location?.coordinate.latitude
+                        self.locationLongitude = self.placemark?.location?.coordinate.longitude
                         self.createStringFromPlacemarkToGetLocationAddress()
                     } else {
                         
-                        if error.code == CLError.Network.rawValue {
+                        if error!._code == CLError.Code.network.rawValue {
                             self.errorLabel.text = "Could not connect. \n Please check your internet connection and try again."
-                            self.errorLabel.hidden = false
+                            self.errorLabel.isHidden = false
                         }
                         self.placemark = nil
                         self.locationLattitude = nil
                         self.locationLongitude = nil
                         self.cityNameTextField.text = ""
-                        self.nextButton.enabled = false
+                        self.nextButton.isEnabled = false
                         
                     }
                     self.performingReverseGeocoding = false
                 })
             }
         } else if distance < 1.0 {
-            let timeInterval = newLocation.timestamp.timeIntervalSinceDate(location!.timestamp)
+            let timeInterval = newLocation.timestamp.timeIntervalSince(location!.timestamp)
             if timeInterval > 10 {
                 
                 self.searchLocationActivityIndicator.stopAnimating()
@@ -316,17 +317,17 @@ class MeetingVenueViewController: UIViewController, CLLocationManagerDelegate, U
         }
     }
     
-    @IBAction func cancel(sender: UIBarButtonItem) {
-         dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func cancel(_ sender: UIBarButtonItem) {
+         dismiss(animated: true, completion: nil)
     }
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField === cityNameTextField {
-        let enterString = cityNameTextField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+        let enterString = cityNameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
             
-            if placemark != nil && count(enterString) > 0 {
-                nextButton.enabled = true
+            if placemark != nil && (enterString.characters.count) > 0 {
+                nextButton.isEnabled = true
             } else {
-                nextButton.enabled = false
+                nextButton.isEnabled = false
             }
        
        cityNameTextField.resignFirstResponder()
@@ -336,14 +337,14 @@ class MeetingVenueViewController: UIViewController, CLLocationManagerDelegate, U
        return true
     }
     
-    func textFieldShouldClear(textField: UITextField) -> Bool {
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
         if textField === cityNameTextField {
-        nextButton.enabled = false
+        nextButton.isEnabled = false
         }
         return true
     }
     
-    @IBAction func showCategoryView(sender: UIButton) {
+    @IBAction func showCategoryView(_ sender: UIButton) {
         
         changeAlphaWithAnimations()
     }
@@ -352,9 +353,9 @@ class MeetingVenueViewController: UIViewController, CLLocationManagerDelegate, U
     
     func changeAlphaWithAnimations() {
         
-       errorLabel.hidden = true
+       errorLabel.isHidden = true
         
-        UIView.animateWithDuration(2.0, delay: 0.5, options: UIViewAnimationOptions.AllowAnimatedContent, animations: {
+        UIView.animate(withDuration: 2.0, delay: 0.5, options: UIViewAnimationOptions.allowAnimatedContent, animations: {
             self.navigationItem.rightBarButtonItem = self.categoryBarButton
             self.categoryView.alpha = 1.0
             }, completion: {
@@ -386,7 +387,7 @@ class MeetingVenueViewController: UIViewController, CLLocationManagerDelegate, U
             
             // Show annotaion on map with the user's location
             
-            var annotation = MKPointAnnotation()
+            let annotation = MKPointAnnotation()
             annotation.coordinate = CLLocationCoordinate2DMake(locationLattitude!, locationLongitude!)
             //annotation.title = "\(location.firstName!) \(location.lastName!)"
             // Add annotation
@@ -394,38 +395,38 @@ class MeetingVenueViewController: UIViewController, CLLocationManagerDelegate, U
     }
 
     
-    @IBAction func searchButtonTapped(sender: UIButton) {
+    @IBAction func searchButtonTapped(_ sender: UIButton) {
         
-        let enterString = searchPlaceTextField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-        if count(enterString) == 0 {
+        let enterString = searchPlaceTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        if (enterString?.characters.count) == 0 {
             emptySearchMessage.text = "Please enter your interest to search."
-            emptySearchMessage.hidden = false
+            emptySearchMessage.isHidden = false
             return
         } else {
-            emptySearchMessage.hidden = true
+            emptySearchMessage.isHidden = true
         
         
         // Show activity indicator
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-        self.categoryBarButton.enabled = false
-        self.searchLocationButton.enabled = false
-        self.searchPlaceTextField.enabled = false
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        self.categoryBarButton.isEnabled = false
+        self.searchLocationButton.isEnabled = false
+        self.searchPlaceTextField.isEnabled = false
        
         searchActivityIndicator.startAnimating()
         
         let locationString = "\(self.locationLattitude!),\(self.locationLongitude!)"
         
-        Client.sharedInstance().searchLocations(locationString, locationSearchString: searchPlaceTextField.text, completionHandler: {
+        Client.sharedInstance().searchLocations(locationString, locationSearchString: searchPlaceTextField.text!, completionHandler: {
             results, error in
             
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 if let error = error {
                     
                     // Show network error
-                    UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-                    self.categoryBarButton.enabled = true
-                    self.searchLocationButton.enabled = true
-                    self.searchPlaceTextField.enabled = true
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                    self.categoryBarButton.isEnabled = true
+                    self.searchLocationButton.isEnabled = true
+                    self.searchPlaceTextField.isEnabled = true
                     self.searchActivityIndicator.stopAnimating()
                     if error.domain == "LetsMeet NetworkError" {
                         self.showNetworkError()
@@ -450,17 +451,17 @@ class MeetingVenueViewController: UIViewController, CLLocationManagerDelegate, U
                                     
                                     objVenue.imagesURL = receivedUrl
                                     
-                                    venueImageServiceCalls++
+                                    venueImageServiceCalls = venueImageServiceCalls + 1
                                     
                                     if (venueImageServiceCalls == self.locationsArray!.count) {
                                         
-                                        dispatch_async(dispatch_get_main_queue(), {
+                                        DispatchQueue.main.async {
                                             self.searchActivityIndicator.stopAnimating()
-                                            self.categoryBarButton.enabled = true
-                                            self.searchLocationButton.enabled = true
-                                            self.searchPlaceTextField.enabled = true
-                                            self.performSegueWithIdentifier("ShowSearchedLocations", sender: nil)
-                                        })
+                                            self.categoryBarButton.isEnabled = true
+                                            self.searchLocationButton.isEnabled = true
+                                            self.searchPlaceTextField.isEnabled = true
+                                            self.performSegue(withIdentifier: "ShowSearchedLocations", sender: nil)
+                                        }
                                         
                                     }
                                     
@@ -471,20 +472,20 @@ class MeetingVenueViewController: UIViewController, CLLocationManagerDelegate, U
                             //No result
                             self.searchActivityIndicator.stopAnimating()
                             self.emptySearchMessage.text = "No search results! Try with different search input."
-                            self.emptySearchMessage.hidden = false
-                            self.categoryBarButton.enabled = true
-                            self.searchLocationButton.enabled = true
-                            self.searchPlaceTextField.enabled = true
+                            self.emptySearchMessage.isHidden = false
+                            self.categoryBarButton.isEnabled = true
+                            self.searchLocationButton.isEnabled = true
+                            self.searchPlaceTextField.isEnabled = true
                         }
                         
                     } else {
                         //No result
                         self.searchActivityIndicator.stopAnimating()
                         self.emptySearchMessage.text = "No search results! Try with different search input."
-                        self.emptySearchMessage.hidden = false
-                        self.categoryBarButton.enabled = true
-                        self.searchLocationButton.enabled = true
-                        self.searchPlaceTextField.enabled = true
+                        self.emptySearchMessage.isHidden = false
+                        self.categoryBarButton.isEnabled = true
+                        self.searchLocationButton.isEnabled = true
+                        self.searchPlaceTextField.isEnabled = true
                     }
                 }
             })
@@ -495,47 +496,47 @@ class MeetingVenueViewController: UIViewController, CLLocationManagerDelegate, U
         let alert = UIAlertController(
             title: "Could not connect",
             message: "Please check your internet connection and try again.",
-            preferredStyle: .Alert)
+            preferredStyle: .alert)
         
-        let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
         alert.addAction(action)
         
-        presentViewController(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
-    func showDataFetchError(error:NSError) {
+    func showDataFetchError(_ error:NSError) {
         let alert = UIAlertController(
             title: "Oops...",
             message: error.localizedDescription,
-            preferredStyle: .Alert)
+            preferredStyle: .alert)
         
-        let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
         alert.addAction(action)
         
-        presentViewController(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ShowSearchedLocations" {
-            let destinationViewController = segue.destinationViewController as! SearchLocationsViewController
+            let destinationViewController = segue.destination as! SearchLocationsViewController
             destinationViewController.locationsArray = self.locationsArray
             destinationViewController.cityName = cityName!
             destinationViewController.categoryName = searchPlaceTextField.text
         }
     }
     
-    func getImageUrl (venueId:String, completionHandler : (receivedURL : [String]?) -> Void) -> Void {
+    func getImageUrl (_ venueId:String, completionHandler : @escaping (_ receivedURL : [String]?) -> Void) -> Void {
         Client.sharedInstance().getVenueImageURL(venueId, completionHandler: {
             result, error in
             
             if error != nil {
-                completionHandler(receivedURL: nil)
+                completionHandler(nil)
                 
             } else {
-                completionHandler(receivedURL: result)
+                completionHandler(result)
             }
         })
     }
-    @IBAction func categoryPickerDidPickCategory(segue: UIStoryboardSegue) {
-        let controller = segue.sourceViewController as! NestedCategoriesViewController
+    @IBAction func categoryPickerDidPickCategory(_ segue: UIStoryboardSegue) {
+        let controller = segue.source as! NestedCategoriesViewController
         let selectedCategory = controller.selectedCategory
         searchPlaceTextField.text = selectedCategory?.categoryName
     }

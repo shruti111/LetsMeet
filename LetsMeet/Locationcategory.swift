@@ -30,16 +30,16 @@ class Locationcategory : NSManagedObject {
     }
     
     // Init method to insert object in core data
-    override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-        super.init(entity: entity, insertIntoManagedObjectContext: context)
+    override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertInto: context)
     }
     
     // Init method that will convert  dictionary into managed object and insert in core data 
     
     init(dictionary:[String:AnyObject], context:NSManagedObjectContext) {
        
-        let entity = NSEntityDescription.entityForName("Locationcategory", inManagedObjectContext: context)!
-        super.init(entity: entity, insertIntoManagedObjectContext: context)
+        let entity = NSEntityDescription.entity(forEntityName: "Locationcategory", in: context)!
+        super.init(entity: entity, insertInto: context)
         
         categoryId = dictionary[Keys.CategoryId] as! String
         categoryName = dictionary[Keys.CategoryName] as! String
@@ -52,7 +52,7 @@ class Locationcategory : NSManagedObject {
          
             var categories = dic.map() {
                 (dictionary : [String:AnyObject]) -> Locationcategory in
-                var newDictionary = dictionary
+                let newDictionary = dictionary
                 
                 let tempCategoryId = self.categoryId
                 let categoryTobeAdded = Locationcategory(dictionary: newDictionary, context:context)

@@ -18,15 +18,17 @@ class LcationCategoriesViewController: UITableViewController, NSFetchedResultsCo
         
         //NSFetchedResultsController shows Categores from Core Data Entity
         performFetch()
-        tableView!.tableFooterView = UIView(frame: CGRectZero)
-        tableView!.tableFooterView?.hidden = true
+        tableView!.tableFooterView = UIView(frame: CGRect.zero)
+        tableView!.tableFooterView?.isHidden = true
     }
     
     func performFetch() {
-        var error: NSError?
-        if !fetchedResultsController.performFetch(&error) {
-              println("Error performing initial fetch: \(error)")
-        }
+        
+            do {
+                try fetchedResultsController.performFetch()
+            } catch let e as NSError {
+                print("Error while trying to perform a search: \n\(e)\n\(fetchedResultsController)")
+            }
     }
     
     deinit {
@@ -35,25 +37,25 @@ class LcationCategoriesViewController: UITableViewController, NSFetchedResultsCo
    
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return fetchedResultsController.sections!.count
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let sectionInfo = fetchedResultsController.sections![section] as! NSFetchedResultsSectionInfo
         return sectionInfo.numberOfObjects
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("locationCategoryCell", forIndexPath: indexPath) as! ParentlocationCategoryTableViewCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "locationCategoryCell", for: indexPath) as! ParentlocationCategoryTableViewCell
         configureCell(cell, atIndexPath:indexPath)
         return cell
     }
     
-    func configureCell(cell:ParentlocationCategoryTableViewCell, atIndexPath indexPath:NSIndexPath) {
+    func configureCell(_ cell:ParentlocationCategoryTableViewCell, atIndexPath indexPath:IndexPath) {
         
         // Show the placeholder image till the time image is being downloaded
-        let locationcategory = fetchedResultsController.objectAtIndexPath(indexPath) as! Locationcategory
+        let locationcategory = fetchedResultsController.object(at: indexPath) as! Locationcategory
         cell.parentCategoryName.text = locationcategory.categoryName
         var cellImage = UIImage(named: "imagePlaceholder")
         cell.parentCategoryIcon.image = nil
@@ -70,14 +72,14 @@ class LcationCategoriesViewController: UITableViewController, NSFetchedResultsCo
 
                     // Create the image
                     var image = UIImage(data: imageData)
-                   image = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+                   image = image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
 
                     // update the cell later, on the main thread
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                         cell.parentCategoryIcon.image = image
                     }
                 } else {
-                    println("Data is not convertible to Image Data.")
+                    print("Data is not convertible to Image Data.")
                 }
             }
             cell.taskToCancelifCellIsReused = task
@@ -86,32 +88,32 @@ class LcationCategoriesViewController: UITableViewController, NSFetchedResultsCo
         cell.parentCategoryIcon.image = cellImage
     }
     
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
-        println("*** controllerWillChangeContent")
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        print("*** controllerWillChangeContent")
         tableView.beginUpdates()
     }
     
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        println("*** controllerDidChangeContent")
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        print("*** controllerDidChangeContent")
         tableView.endUpdates()
     }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-          let locationcategory = fetchedResultsController.objectAtIndexPath(indexPath) as! Locationcategory
-        performSegueWithIdentifier("showNestedCategory", sender: locationcategory)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+          let locationcategory = fetchedResultsController.object(at: indexPath) as! Locationcategory
+        performSegue(withIdentifier: "showNestedCategory", sender: locationcategory)
     }
     
     // MARK: - Navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let destinationViewController = segue.destinationViewController as! NestedCategoriesViewController
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationViewController = segue.destination as! NestedCategoriesViewController
         let cateogry = sender as! Locationcategory
         destinationViewController.parentCategory = cateogry
     }
     
     //MARK:- Core Data
     
-    lazy var fetchedResultsController: NSFetchedResultsController = {
-        let fetchRequest = NSFetchRequest(entityName: "Locationcategory")
+    lazy var fetchedResultsController: NSFetchedResultsController<NSManagedObject> = {
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Locationcategory")
         fetchRequest.sortDescriptors = []
         fetchRequest.predicate = NSPredicate(format: "parentId == nil")
         let fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)

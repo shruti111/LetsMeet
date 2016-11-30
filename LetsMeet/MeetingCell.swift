@@ -21,7 +21,7 @@ class MeetingCell: UITableViewCell {
     }
     
     // Cancel download task when collection view cell is reused
-    var taskToCancelifCellIsReused: NSURLSessionTask? {
+    var taskToCancelifCellIsReused: URLSessionTask? {
         
         didSet {
             if let taskToCancel = oldValue {

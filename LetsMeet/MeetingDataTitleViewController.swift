@@ -24,11 +24,11 @@ class MeetingDataTitleViewController: UIViewController {
     var viewcontrollerTitle:String = "title"
     var isPopUp = true
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
         // Define presentation style while shwoing controller modally
-        modalPresentationStyle = .Custom
+        modalPresentationStyle = .custom
         
         // To provide trainsiton
         transitioningDelegate = self
@@ -39,23 +39,23 @@ class MeetingDataTitleViewController: UIViewController {
         
         // Layer border and style for viewcontroller's view , and text field
         popupView.layer.borderWidth = 1
-        popupView.layer.borderColor = applicationThemeColor().CGColor
+        popupView.layer.borderColor = applicationThemeColor().cgColor
         popupView.layer.cornerRadius = 5
         
         titleTextView.layer.borderWidth = 0.5
-        titleTextView.layer.borderColor = applicationThemeColor().CGColor
+        titleTextView.layer.borderColor = applicationThemeColor().cgColor
         
         descriptiontextView.layer.borderWidth = 0.5
-        descriptiontextView.layer.borderColor = applicationThemeColor().CGColor
+        descriptiontextView.layer.borderColor = applicationThemeColor().cgColor
         
         cancelButton.layer.borderWidth = 1
-        cancelButton.layer.borderColor = applicationThemeColor().CGColor
+        cancelButton.layer.borderColor = applicationThemeColor().cgColor
         cancelButton.layer.cornerRadius = doneButton.frame.size.height / 2
         
         // The view is shown in form of pop up
         // Tap gesture to dismiss this view
         if isPopUp {
-            let gestureRecognizer = UITapGestureRecognizer(target: self, action: Selector("close"))
+            let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MeetingDataTitleViewController.close))
             gestureRecognizer.cancelsTouchesInView = false
             gestureRecognizer.delegate = self
             view.addGestureRecognizer(gestureRecognizer)
@@ -70,7 +70,7 @@ class MeetingDataTitleViewController: UIViewController {
     
     func updateUI() {
         
-        popupView.hidden = false
+        popupView.isHidden = false
         
         if CloudClient.sharedInstance().meeting?.title != nil {
             titleTextView.text = CloudClient.sharedInstance().meeting?.title!
@@ -80,14 +80,14 @@ class MeetingDataTitleViewController: UIViewController {
         }
     }
 
-    @IBAction func cancel(sender: UIButton) {
+    @IBAction func cancel(_ sender: UIButton) {
          isCancelButtonTapped = true
-         dismissViewControllerAnimated(true, completion: nil)
+         dismiss(animated: true, completion: nil)
     }
    
     @IBAction func close() {
         isCancelButtonTapped = false
-        dismissViewControllerAnimated(true, completion:nil)
+        dismiss(animated: true, completion:nil)
     }
 }
 
@@ -95,23 +95,24 @@ class MeetingDataTitleViewController: UIViewController {
 extension MeetingDataTitleViewController: UIViewControllerTransitioningDelegate {
     
     // View controller is presented
-    func presentationControllerForPresentedViewController(presented: UIViewController, presentingViewController presenting: UIViewController!, sourceViewController source: UIViewController) -> UIPresentationController? {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController??, source: UIViewController) -> UIPresentationController? {
         
-        return DimmingPresentationViewController(presentedViewController: presented, presentingViewController: presenting)
+        return DimmingPresentationViewController(presentedViewController: presented, presenting: presenting!)
     }
     
     //View controller is dismissed
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return BounceAnimationController()
         
     }
     
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         
         // Update the data model with user entered data
         if !isCancelButtonTapped {
-            CloudClient.sharedInstance().meeting?.title = count(self.titleTextView!.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())) > 0 ? self.titleTextView!.text : nil
-            CloudClient.sharedInstance().meeting?.details = count(self.descriptiontextView!.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())) > 0 ? self.descriptiontextView!.text : nil
+            
+          CloudClient.sharedInstance().meeting?.title =  self.titleTextView!.text!.trimmingCharacters(in: .whitespacesAndNewlines).characters.count > 0 ? self.titleTextView!.text : nil
+        CloudClient.sharedInstance().meeting?.details = self.descriptiontextView!.text!.trimmingCharacters(in: .whitespacesAndNewlines).characters.count > 0 ? self.descriptiontextView!.text : nil
         }
        
         //Upate Landing view controller based on data is entered or not
@@ -131,14 +132,14 @@ extension MeetingDataTitleViewController: UIGestureRecognizerDelegate {
     
     // This will return the view based on touch of the user
     // If it is touch inside the presented view,
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         return (touch.view === view)
     }
 }
 
 
 extension MeetingDataTitleViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         descriptiontextView.becomeFirstResponder()
         return true
     }

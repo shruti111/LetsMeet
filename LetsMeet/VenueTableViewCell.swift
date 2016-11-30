@@ -24,7 +24,7 @@ class VenueTableViewCell: UITableViewCell {
         super.awakeFromNib()
     }
     
-    func configureForSearchResult(searchResult: Venue) {
+    func configureForSearchResult(_ searchResult: Venue) {
         // Set the location see with Venue Data Model / Entity
         venue = searchResult
         venueNameLabel.text = searchResult.name

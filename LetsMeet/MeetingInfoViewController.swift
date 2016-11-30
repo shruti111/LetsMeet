@@ -35,7 +35,7 @@ class MeetingInfoViewController: UITableViewController {
         // This is static table view , so set the all UI element properties
         
         if meeting?.location?.imagesURL == nil {
-          imageCollectionTableViewCell.hidden = true
+          imageCollectionTableViewCell.isHidden = true
         } else {
             imageCollectionView!.imageUrls = meeting!.location!.imagesURL
             imageCollectionView!.dataSource = imageCollectionView!
@@ -43,7 +43,7 @@ class MeetingInfoViewController: UITableViewController {
         
     
         if meeting?.location?.formattedAddress == nil {
-            addressTableViewCell.hidden = true
+            addressTableViewCell.isHidden = true
         } else {
             addressLabel.text = meeting!.location!.formattedAddress
         }
@@ -52,7 +52,7 @@ class MeetingInfoViewController: UITableViewController {
         organizerLabel.text =  meeting!.meetingOwner
     
         descriptionLabel.text = meeting!.details  ?? nil
-        dateLabel.text = dateFormatterToGetOnlyDate.stringFromDate(meeting!.startTime!)
+        dateLabel.text = dateFormatterToGetOnlyDate.string(from: meeting!.startTime!)
         timeLabel.text = meeting!.meetingHours
         
         locationName.text = meeting!.location!.name
@@ -74,24 +74,24 @@ class MeetingInfoViewController: UITableViewController {
         mapView.addAnnotation(annotation)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         
         tableView.reloadData()
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         //Based on the data filled by user, set the each table view row's height
-        let cell = super.tableView(tableView, cellForRowAtIndexPath: indexPath) as UITableViewCell
+        let cell = super.tableView(tableView, cellForRowAt: indexPath) as UITableViewCell
         
-        if indexPath.row == 0 {
+        if (indexPath as NSIndexPath).row == 0 {
             return  getLabelHeight(meeting!.title! as NSString, font: tableViewCellLabelBigFont(), paddingSpace:16)
           
-        } else if indexPath.row ==  2 {
+        } else if (indexPath as NSIndexPath).row ==  2 {
             if meeting?.details != nil {
              return  getLabelHeight(meeting!.details! as NSString, font: tableViewCellLabelMediumFont(), paddingSpace:133)
             }
-        }else if indexPath.row ==  5 {
+        }else if (indexPath as NSIndexPath).row ==  5 {
             return  getLabelHeight(meeting!.location!.name! as NSString, font: tableViewCellLabelMediumFont(), paddingSpace:133)
         }
         if meeting?.location?.formattedAddress == nil {
@@ -99,7 +99,7 @@ class MeetingInfoViewController: UITableViewController {
                 return 0
             }
         } else {
-            if indexPath.row == 6 {
+            if (indexPath as NSIndexPath).row == 6 {
                 return  getLabelHeight(meeting!.location!.formattedAddress! as NSString, font: tableViewCellLabelMediumFont(), paddingSpace:133)
             }
         }
@@ -109,23 +109,23 @@ class MeetingInfoViewController: UITableViewController {
             }
         }
         
-        return super.tableView(tableView, heightForRowAtIndexPath: indexPath)
+        return super.tableView(tableView, heightForRowAt: indexPath)
     }
     
     // Calculate label height from the text
     
-    func getLabelHeight(labelText:NSString, font:UIFont, paddingSpace:CGFloat ) -> CGFloat {
+    func getLabelHeight(_ labelText:NSString, font:UIFont, paddingSpace:CGFloat ) -> CGFloat {
         
-        var attributesDictionary = [NSFontAttributeName: font]
+        let attributesDictionary = [NSFontAttributeName: font]
         let labelTextString = labelText
-        let labelSize = labelTextString.boundingRectWithSize(CGSize(width: UIScreen.mainScreen().bounds.size.width - paddingSpace, height: 10000), options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: attributesDictionary, context: nil).size
+        let labelSize = labelTextString.boundingRect(with: CGSize(width: UIScreen.main.bounds.size.width - paddingSpace, height: 10000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: attributesDictionary, context: nil).size
         return labelSize.height + 16
     }
 
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showPhoto" {
-            let navigationController = segue.destinationViewController as! UINavigationController
+            let navigationController = segue.destination as! UINavigationController
             let photoViewerViewController = navigationController.topViewController as? PhotoViewerViewController
             let venueImageCollectionView = sender as? UICollectionViewCell
             let venueImageView =  venueImageCollectionView!.viewWithTag(500) as! UIImageView
@@ -133,13 +133,13 @@ class MeetingInfoViewController: UITableViewController {
             photoViewerViewController!.locationName = meeting!.location!.name
 
         } else if segue.identifier == "showLocationinMap" {
-            let mapViewController = segue.destinationViewController as! MapViewController
+            let mapViewController = segue.destination as! MapViewController
              mapViewController.venueForMap = meeting!.location
         }
     }
     
-    @IBAction func showLocationInMap(sender: UIButton) {
-         performSegueWithIdentifier("showLocationinMap", sender: nil)
+    @IBAction func showLocationInMap(_ sender: UIButton) {
+         performSegue(withIdentifier: "showLocationinMap", sender: nil)
     }
 
 }

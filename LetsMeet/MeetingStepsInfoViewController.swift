@@ -15,7 +15,7 @@ class MeetingStepsInfoViewController: UIViewController {
         super.viewDidLoad()
     }
     
-    @IBAction func doneTapped(sender: UIButton) {
-         dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func doneTapped(_ sender: UIButton) {
+         dismiss(animated: true, completion: nil)
     }
 }

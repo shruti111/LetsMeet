@@ -21,10 +21,10 @@ class PhotoViewerViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         title = locationName
         imageView = UIImageView(image: sourceImage!)
-        let height = view.bounds.size.height -  (navigationController!.navigationBar.frame.size.height + UIApplication.sharedApplication().statusBarFrame.size.height)
-        let ycoordiate =  (navigationController!.navigationBar.frame.size.height + UIApplication.sharedApplication().statusBarFrame.size.height)
+        let height = view.bounds.size.height -  (navigationController!.navigationBar.frame.size.height + UIApplication.shared.statusBarFrame.size.height)
+        let ycoordiate =  (navigationController!.navigationBar.frame.size.height + UIApplication.shared.statusBarFrame.size.height)
         scrollView = UIScrollView(frame: CGRect(x: view.bounds.origin.x, y: ycoordiate, width: view.bounds.size.width, height: height))
-        scrollView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        scrollView.autoresizingMask = [.flexibleWidth , .flexibleHeight ]
         scrollView.backgroundColor = landingScreenFilledButtonTintColor()
         scrollView.contentSize = imageView.bounds.size
         scrollView.addSubview(imageView)
@@ -37,7 +37,7 @@ class PhotoViewerViewController: UIViewController, UIScrollViewDelegate {
     }
 
     // Set zoom scale to make photo 3 times bigger
-    func setZoomParametersForSize(scrollViewSize: CGSize) {
+    func setZoomParametersForSize(_ scrollViewSize: CGSize) {
         let imageSize = imageView.bounds.size
         let widthScale = scrollViewSize.width / imageSize.width
         let heightScale = scrollViewSize.height / imageSize.height
@@ -64,16 +64,16 @@ class PhotoViewerViewController: UIViewController, UIScrollViewDelegate {
     }
     
     //MARK: - ScrollViewDelegate Methods
-    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
     }
     
-    func scrollViewDidZoom(scrollView: UIScrollView) {
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
         recenterImage()
     }
 
-    @IBAction func cancel(sender: UIBarButtonItem) {
-        dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func cancel(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
     }
 
    

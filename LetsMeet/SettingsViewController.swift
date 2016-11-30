@@ -19,7 +19,7 @@ class SettingsViewController: UITableViewController,MFMailComposeViewControllerD
         super.viewDidLoad()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         showuseriCloudLoginStatus()
@@ -31,29 +31,29 @@ class SettingsViewController: UITableViewController,MFMailComposeViewControllerD
     
     // This opens twitter application and not installed in browser
     func shareOnTwitter() {
-        let tweetbot = NSURL(string: "tweetbot://current/user_profile/shrutichoksi111")!
-        let twitterrific = NSURL(string: "twitterrific://current/profile?screen_name=shrutichoksi111")!
-        let twitter = NSURL(string: "twitter://user?screen_name=shrutichoksi111")!
-        let safari = NSURL(string: "https://twitter.com/shrutichoksi111")!
+        let tweetbot = URL(string: "tweetbot://current/user_profile/shrutichoksi111")!
+        let twitterrific = URL(string: "twitterrific://current/profile?screen_name=shrutichoksi111")!
+        let twitter = URL(string: "twitter://user?screen_name=shrutichoksi111")!
+        let safari = URL(string: "https://twitter.com/shrutichoksi111")!
         
-        if UIApplication.sharedApplication().canOpenURL(tweetbot) {
-            UIApplication.sharedApplication().openURL(tweetbot)
+        if UIApplication.shared.canOpenURL(tweetbot) {
+            UIApplication.shared.openURL(tweetbot)
         } else {
-            if UIApplication.sharedApplication().canOpenURL(twitterrific) {
-                UIApplication.sharedApplication().openURL(twitterrific)
+            if UIApplication.shared.canOpenURL(twitterrific) {
+                UIApplication.shared.openURL(twitterrific)
             } else {
-                if UIApplication.sharedApplication().canOpenURL(twitter) {
-                    UIApplication.sharedApplication().openURL(twitter)
+                if UIApplication.shared.canOpenURL(twitter) {
+                    UIApplication.shared.openURL(twitter)
                 } else {
-                    if UIApplication.sharedApplication().canOpenURL(safari) {
-                        UIApplication.sharedApplication().openURL(safari)
+                    if UIApplication.shared.canOpenURL(safari) {
+                        UIApplication.shared.openURL(safari)
                     } else {
-                        let alert = UIAlertController(title: NSLocalizedString("Failed to open url", comment: ""), message: nil, preferredStyle: .Alert)
-                        let ok = UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Default) { _ in
-                            alert.dismissViewControllerAnimated(true, completion: nil)
+                        let alert = UIAlertController(title: NSLocalizedString("Failed to open url", comment: ""), message: nil, preferredStyle: .alert)
+                        let ok = UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default) { _ in
+                            alert.dismiss(animated: true, completion: nil)
                         }
                         alert.addAction(ok)
-                        presentViewController(alert, animated: true, completion: nil)
+                        present(alert, animated: true, completion: nil)
                     }
                 }
             }
@@ -64,10 +64,10 @@ class SettingsViewController: UITableViewController,MFMailComposeViewControllerD
     // Share github link of this project from different application like LinkedIn, Facebook, WhatsApp which are installed in user's phone
     
     func share() {
-        let url = NSURL(string: "https://github.com/shruti111")!
+        let url = URL(string: "https://github.com/shruti111")!
         let string = NSLocalizedString("Let's Meet", comment: "")
         let activityViewController = UIActivityViewController(activityItems: [string, url], applicationActivities: nil)
-        presentViewController(activityViewController, animated: true, completion: nil)
+        present(activityViewController, animated: true, completion: nil)
     }
     
     // Send mail to the user sharing application's github link
@@ -85,66 +85,66 @@ class SettingsViewController: UITableViewController,MFMailComposeViewControllerD
             body += "<hr>"
         
             mailComposeViewController.setMessageBody(body, isHTML: true)
-            presentViewController(mailComposeViewController, animated: true, completion: nil)
+            present(mailComposeViewController, animated: true, completion: nil)
         } else {
-            let alert = UIAlertController(title: NSLocalizedString("Failed to send mail", comment: ""), message: nil, preferredStyle: .Alert)
-            let ok = UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Default) { _ in
-                alert.dismissViewControllerAnimated(true, completion: nil)
+            let alert = UIAlertController(title: NSLocalizedString("Failed to send mail", comment: ""), message: nil, preferredStyle: .alert)
+            let ok = UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default) { _ in
+                alert.dismiss(animated: true, completion: nil)
             }
             alert.addAction(ok)
-            presentViewController(alert, animated: true, completion: nil)
+            present(alert, animated: true, completion: nil)
         }
 
     }
     
     // MARK: MFMailComposeViewControllerDelegate
     
-    func mailComposeController(controller: MFMailComposeViewController!, didFinishWithResult result: MFMailComposeResult, error: NSError!) {
-        dismissViewControllerAnimated(true, completion: nil)
+    func mailComposeController(_ controller: MFMailComposeViewController!, didFinishWith result: MFMailComposeResult, error: Error!) {
+        dismiss(animated: true, completion: nil)
     }
     
     // Open application url based on table view cell selected
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: false)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
         
-        var url:NSURL!
+        var url:URL!
         
-        if indexPath.section == 1 {
+        if (indexPath as NSIndexPath).section == 1 {
             
-            if indexPath.item == 0 {
+            if (indexPath as NSIndexPath).item == 0 {
                share()
-            } else if indexPath.item == 1 {
+            } else if (indexPath as NSIndexPath).item == 1 {
                 mail()
-            } else if indexPath.item == 2 {
+            } else if (indexPath as NSIndexPath).item == 2 {
                 shareOnTwitter()
             }
-        } else if indexPath.section == 2 {
-            switch indexPath.item {
+        } else if (indexPath as NSIndexPath).section == 2 {
+            switch (indexPath as NSIndexPath).item {
             case 0:
-                url = NSURL(string: "https://www.udacity.com/")
+                url = URL(string: "https://www.udacity.com/")
             case 1:
-                url = NSURL(string: "https://foursquare.com")
+                url = URL(string: "https://foursquare.com")
             case 2:
-                url = NSURL(string: "http://www.appcoda.com/cloudkit-introduction-tutorial/")
+                url = URL(string: "http://www.appcoda.com/cloudkit-introduction-tutorial/")
             case 3:
-                url = NSURL(string: "http://www.raywenderlich.com")
+                url = URL(string: "http://www.raywenderlich.com")
             case 4:
-                url = NSURL(string: "https://github.com/tristanhimmelman/THContactPicker")
+                url = URL(string: "https://github.com/tristanhimmelman/THContactPicker")
             case 5:
-                url = NSURL(string: "https://github.com/fwhenin/Swift-NSDate-Extensions")
+                url = URL(string: "https://github.com/fwhenin/Swift-NSDate-Extensions")
             default:
                 break
             }
             
-            if UIApplication.sharedApplication().canOpenURL(url) {
-                UIApplication.sharedApplication().openURL(url)
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.openURL(url)
             } else {
-                let alert = UIAlertController(title: NSLocalizedString("Failed to open url", comment: ""), message: nil, preferredStyle: .Alert)
-                let ok = UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Default) { _ in
-                    alert.dismissViewControllerAnimated(true, completion: nil)
+                let alert = UIAlertController(title: NSLocalizedString("Failed to open url", comment: ""), message: nil, preferredStyle: .alert)
+                let ok = UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default) { _ in
+                    alert.dismiss(animated: true, completion: nil)
                 }
                 alert.addAction(ok)
-                presentViewController(alert, animated: true, completion: nil)
+                present(alert, animated: true, completion: nil)
             }
         }
     }

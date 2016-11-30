@@ -20,20 +20,22 @@ var sharedContext: NSManagedObjectContext = CoreDataStackManager.sharedInstance(
         fetchedResultsController.delegate = self
         
         // Start the fetched results controller
-        var error: NSError?
-        fetchedResultsController.performFetch(&error)
-        if let error = error {
-            println("Error performing initial fetch: \(error)")
-        }
-        tableView!.tableFooterView = UIView(frame: CGRectZero)
-        tableView!.tableFooterView?.hidden = true
+        
+       
+            do {
+                try fetchedResultsController.performFetch()
+            } catch let e as NSError {
+                print("Error performing initial fetch: \n\(e)\n\(fetchedResultsController)")
+            }
+        tableView!.tableFooterView = UIView(frame: CGRect.zero)
+        tableView!.tableFooterView?.isHidden = true
     }
     
     //MARK:- Core Data
     
-    lazy var fetchedResultsController: NSFetchedResultsController = {
-        let fetchRequest = NSFetchRequest()
-        let entity = NSEntityDescription.entityForName("Meeting", inManagedObjectContext: self.sharedContext)
+    lazy var fetchedResultsController: NSFetchedResultsController<NSManagedObject> = {
+        let fetchRequest = NSFetchRequest<NSManagedObject>()
+        let entity = NSEntityDescription.entity(forEntityName: "Meeting", in: self.sharedContext)
         fetchRequest.entity = entity
         let dateSortDescriptor = NSSortDescriptor(key: "sectionDate", ascending: false)
         let dateTimeSortDescriptor = NSSortDescriptor(key: "startTime", ascending: true)
@@ -47,9 +49,9 @@ var sharedContext: NSManagedObjectContext = CoreDataStackManager.sharedInstance(
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         
-       println("Sections \(self.fetchedResultsController.sections?.count)")
+       print("Sections \(self.fetchedResultsController.sections?.count)")
        if let sections = fetchedResultsController.sections {
         if sections.count > 0 {
             return self.fetchedResultsController.sections!.count
@@ -62,12 +64,12 @@ var sharedContext: NSManagedObjectContext = CoreDataStackManager.sharedInstance(
         }
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
        
         if let sections = fetchedResultsController.sections {
             if sections.count > 0 {
                 let sectionInfo = self.fetchedResultsController.sections![section] as! NSFetchedResultsSectionInfo
-                println("Sections Objects\(sectionInfo.numberOfObjects)")
+                print("Sections Objects\(sectionInfo.numberOfObjects)")
                 return sectionInfo.numberOfObjects
             }
            
@@ -77,23 +79,23 @@ var sharedContext: NSManagedObjectContext = CoreDataStackManager.sharedInstance(
     }
 
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-      let cell = tableView.dequeueReusableCellWithIdentifier("meetingCell", forIndexPath: indexPath) as! MeetingCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+      let cell = tableView.dequeueReusableCell(withIdentifier: "meetingCell", for: indexPath) as! MeetingCell
         
         configureCell(cell, atIndexPath: indexPath)
         
         return cell
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
        
         if let sections = fetchedResultsController.sections {
             if sections.count > 0 {
             let sectionInfo = fetchedResultsController.sections![section] as! NSFetchedResultsSectionInfo
 
             if sectionInfo.name != nil {
-                 let meeting = self.fetchedResultsController.objectAtIndexPath(NSIndexPath(forRow: 0, inSection: section)) as! Meeting
-                let stringFromDate = dateFormatterToGetOnlyDate.stringFromDate(meeting.startTime!)
+                 let meeting = self.fetchedResultsController.object(at: IndexPath(row: 0, section: section)) as! Meeting
+                let stringFromDate = dateFormatterToGetOnlyDate.string(from: meeting.startTime!)
                 return stringFromDate
             }
          }
@@ -103,11 +105,11 @@ var sharedContext: NSManagedObjectContext = CoreDataStackManager.sharedInstance(
 
     }
     
-    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         if let sections = fetchedResultsController.sections {
             if sections.count > 0 {
-                let headerView = tableView.dequeueReusableCellWithIdentifier("sectionHeader") as! UITableViewCell
+                let headerView = tableView.dequeueReusableCell(withIdentifier: "sectionHeader")!
                 let sectionHeaderLabel = headerView.viewWithTag(100) as! UILabel
                 sectionHeaderLabel.text = tableView.dataSource!.tableView!(tableView, titleForHeaderInSection: section)
                 return headerView
@@ -117,14 +119,14 @@ var sharedContext: NSManagedObjectContext = CoreDataStackManager.sharedInstance(
         return nil
     }
     
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40
     }
 
     // This method will download the image and display as soon  as the imgae is downloaded
-    func configureCell(cell:MeetingCell, atIndexPath indexPath:NSIndexPath) {
+    func configureCell(_ cell:MeetingCell, atIndexPath indexPath:IndexPath) {
         // Show the placeholder image till the time image is being downloaded
-        let meeting = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Meeting
+        let meeting = self.fetchedResultsController.object(at: indexPath) as! Meeting
         cell.meetingTitle.text = meeting.title
         cell.meetingTime.text = meeting.meetingHours
         
@@ -144,16 +146,16 @@ var sharedContext: NSManagedObjectContext = CoreDataStackManager.sharedInstance(
                     
                 // Create the image
                 var image = UIImage(data: imageData)
-                image = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
+                image = image?.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
                 // Update the model so that information gets cached
                 //photo.image = image
                     
                     // update the cell later, on the main thread
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                         cell.meetingLocationImage.image = image
                     }
                 } else {
-                    println("Data is not convertible to Image Data.")
+                    print("Data is not convertible to Image Data.")
                     
                 }
             }
@@ -164,84 +166,84 @@ var sharedContext: NSManagedObjectContext = CoreDataStackManager.sharedInstance(
         }
     }
     
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
-        println("*** controllerWillChangeContent")
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        print("*** controllerWillChangeContent")
         //tableView.beginUpdates()
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
-        case .Insert:
-            println("*** NSFetchedResultsChangeInsert (object)")
+        case .insert:
+            print("*** NSFetchedResultsChangeInsert (object)")
             tableView.backgroundView = nil
-            tableView.separatorStyle = .SingleLine
+            tableView.separatorStyle = .singleLine
             tableView.reloadData()
             //tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
             
-        case .Delete:
-            println("*** NSFetchedResultsChangeDelete (object)")
+        case .delete:
+            print("*** NSFetchedResultsChangeDelete (object)")
             tableView.reloadData()
             //tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
             
-        case .Update:
-            println("*** NSFetchedResultsChangeUpdate (object)")
-            if let cell = tableView.cellForRowAtIndexPath(indexPath!) as? MeetingCell {
-                let meeting = controller.objectAtIndexPath(indexPath!) as! Meeting
+        case .update:
+            print("*** NSFetchedResultsChangeUpdate (object)")
+            if let cell = tableView.cellForRow(at: indexPath!) as? MeetingCell {
+                let meeting = controller.object(at: indexPath!) as! Meeting
                 configureCell(cell, atIndexPath: indexPath!)
             }
             
-        case .Move:
-            println("*** NSFetchedResultsChangeMove (object)")
-            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+        case .move:
+            print("*** NSFetchedResultsChangeMove (object)")
+            tableView.deleteRows(at: [indexPath!], with: .fade)
+            tableView.insertRows(at: [newIndexPath!], with: .fade)
         }
     }
-    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
         switch type {
-        case .Insert:
-            println("*** NSFetchedResultsChangeInsert (section)")
+        case .insert:
+            print("*** NSFetchedResultsChangeInsert (section)")
             tableView.backgroundView = nil
-            tableView.separatorStyle = .SingleLine
+            tableView.separatorStyle = .singleLine
             tableView.reloadData()
             
-        case .Delete:
-            println("*** NSFetchedResultsChangeDelete (section)")
+        case .delete:
+            print("*** NSFetchedResultsChangeDelete (section)")
             tableView.reloadData()
             
-        case .Update:
-            println("*** NSFetchedResultsChangeUpdate (section)")
+        case .update:
+            print("*** NSFetchedResultsChangeUpdate (section)")
             
-        case .Move:
-            println("*** NSFetchedResultsChangeMove (section)")
+        case .move:
+            print("*** NSFetchedResultsChangeMove (section)")
         }
     }
     
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        println("*** controllerDidChangeContent")
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        print("*** controllerDidChangeContent")
     }
     
     
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let meetingInfoViewController = segue.destinationViewController as! MeetingInfoViewController
-        if let indexPath = tableView.indexPathForCell(sender as! UITableViewCell) {
-            meetingInfoViewController.meeting = self.fetchedResultsController.objectAtIndexPath(indexPath) as? Meeting
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let meetingInfoViewController = segue.destination as! MeetingInfoViewController
+        if let indexPath = tableView.indexPath(for: sender as! UITableViewCell) {
+            meetingInfoViewController.meeting = self.fetchedResultsController.object(at: indexPath) as? Meeting
         }
         
     }
     
-    private func showViewWithMessage(inColor labelColor: UIColor) {
+    fileprivate func showViewWithMessage(inColor labelColor: UIColor) {
         let messageLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height))
         messageLabel.text = "You don't have any meeting yet! \n Create hangout and invite your friends."
         messageLabel.textColor = labelColor
         messageLabel.numberOfLines = 0
-        messageLabel.textAlignment = .Center
+        messageLabel.textAlignment = .center
         messageLabel.font = messageLabelFont()
         messageLabel.sizeToFit()
         tableView.backgroundView = messageLabel
-        tableView.separatorStyle = .None
+        tableView.separatorStyle = .none
     }
     
 

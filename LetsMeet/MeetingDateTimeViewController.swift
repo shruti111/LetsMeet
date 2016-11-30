@@ -8,25 +8,25 @@
 
 import UIKit
 
-let dateFormatterToGetOnlyDate: NSDateFormatter = {
-    let formatter = NSDateFormatter()
-    formatter.locale = NSLocale.currentLocale()
+let dateFormatterToGetOnlyDate: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.locale = Locale.current
     formatter.dateFormat = "EEEE, MMMM d"
-    formatter.timeZone = NSTimeZone.localTimeZone()
+    formatter.timeZone = TimeZone.autoupdatingCurrent
     return formatter
     }()
 
-let meetingdateFormatter: NSDateFormatter = {
-    let formatter = NSDateFormatter()
-    formatter.dateStyle = .MediumStyle
-    formatter.timeStyle = .ShortStyle
+let meetingdateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateStyle = .medium
+    formatter.timeStyle = .short
     return formatter
     }()
 
-let noTimedateFormatter: NSDateFormatter = {
-    let formatter = NSDateFormatter()
-    formatter.dateStyle = .MediumStyle
-    formatter.timeStyle = .NoStyle
+let noTimedateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateStyle = .medium
+    formatter.timeStyle = .none
     return formatter
     }()
 
@@ -44,14 +44,14 @@ class MeetingDateTimeViewController: UIViewController {
     @IBOutlet weak var datePicker: UIDatePicker!
     
     var datetimeLabelInFocus:UILabel?
-    var startDate:NSDate?
-    var endDate:NSDate?
+    var startDate:Date?
+    var endDate:Date?
     var isPopUp = true
     
     // This View controller uses same presentation style as MeetingDataTitleViewController
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        modalPresentationStyle = .Custom
+        modalPresentationStyle = .custom
         transitioningDelegate = self
     }
     
@@ -61,22 +61,22 @@ class MeetingDateTimeViewController: UIViewController {
       
         // Set the border and corner radius for UI elements
         popupView.layer.borderWidth = 1
-        popupView.layer.borderColor = applicationThemeColor().CGColor
+        popupView.layer.borderColor = applicationThemeColor().cgColor
         popupView.layer.cornerRadius = 5
         
         startTimeLabel.layer.borderWidth = 0.5
-        startTimeLabel.layer.borderColor = applicationThemeColor().CGColor
+        startTimeLabel.layer.borderColor = applicationThemeColor().cgColor
         
         endTimeLabel.layer.borderWidth = 0.5
-        endTimeLabel.layer.borderColor = applicationThemeColor().CGColor
+        endTimeLabel.layer.borderColor = applicationThemeColor().cgColor
         
         cancelButton.layer.borderWidth = 1
-        cancelButton.layer.borderColor = applicationThemeColor().CGColor
+        cancelButton.layer.borderColor = applicationThemeColor().cgColor
         cancelButton.layer.cornerRadius = doneButton.frame.size.height / 2
         
         // Dismiss view controller when tapped outside the view
         if isPopUp {
-            let gestureRecognizer = UITapGestureRecognizer(target: self, action: Selector("close"))
+            let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MeetingDateTimeViewController.close))
             gestureRecognizer.cancelsTouchesInView = false
             gestureRecognizer.delegate = self
             view.addGestureRecognizer(gestureRecognizer)
@@ -84,10 +84,10 @@ class MeetingDateTimeViewController: UIViewController {
         }
         
         // Start time and end time labels tap to change the datepicker control's cate
-        let startLabelgestureRecognizer = UITapGestureRecognizer(target: self, action: Selector("startDateTimeLabelTapped"))
+        let startLabelgestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MeetingDateTimeViewController.startDateTimeLabelTapped))
         startTimeLabel.addGestureRecognizer(startLabelgestureRecognizer)
         
-        let endLabelgestureRecognizer = UITapGestureRecognizer(target: self, action: Selector("endDateTimeLabelTapped"))
+        let endLabelgestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MeetingDateTimeViewController.endDateTimeLabelTapped))
         endTimeLabel.addGestureRecognizer(endLabelgestureRecognizer)
         
         updateUI()
@@ -99,7 +99,7 @@ class MeetingDateTimeViewController: UIViewController {
         endTimeLabel.backgroundColor = landingScreenButtonColor()
         datePicker.date = startDate!
         datetimeLabelInFocus = startTimeLabel
-        errroLabel.hidden = true
+        errroLabel.isHidden = true
     }
     
     // Change the date time label and date picker control's date when endDateTimelabel is tapped
@@ -108,30 +108,30 @@ class MeetingDateTimeViewController: UIViewController {
         startTimeLabel.backgroundColor = landingScreenButtonColor()
         datePicker.date = endDate!
         datetimeLabelInFocus = endTimeLabel
-        errroLabel.hidden = true
+        errroLabel.isHidden = true
     }
     
     
     func updateUI() {
         
-        popupView.hidden = false
+        popupView.isHidden = false
        
         // We will not allow user to select past date - this will prevent validation check for past date
-        datePicker.minimumDate = NSDate()
+        datePicker.minimumDate = Date()
         
         // Set the start and end time date label based on user selection
         if CloudClient.sharedInstance().meeting?.startTime != nil {
-            startDate = CloudClient.sharedInstance().meeting?.startTime!
+            startDate = CloudClient.sharedInstance().meeting?.startTime! as Date?
         } else {
-            startDate = NSDate()
+            startDate = Date()
             
         }
         startTimeLabel.text = "Start " + formatDate(startDate!)
         
         if CloudClient.sharedInstance().meeting?.endTime != nil {
-            endDate = CloudClient.sharedInstance().meeting?.endTime!
+            endDate = CloudClient.sharedInstance().meeting?.endTime! as Date?
         } else {
-            endDate = NSDate().dateByAddingHours(1)
+            endDate = (Date() as NSDate).dateByAddingHours(dHours: 1) as Date
         }
          endTimeLabel.text = "End " + formatDate(endDate!)
          datePicker.date = startDate!
@@ -140,34 +140,34 @@ class MeetingDateTimeViewController: UIViewController {
     }
     
     // Format date to show date in specific style
-    func formatDate(date: NSDate) -> String {
-        return meetingdateFormatter.stringFromDate(date)
+    func formatDate(_ date: Date) -> String {
+        return meetingdateFormatter.string(from: date)
     }
     
     @IBAction func close() {
        
         // Update properties of Meeting Object
         if !isMeetingTimeValid() {
-            errroLabel.hidden = false
+            errroLabel.isHidden = false
             
         } else {
             
             CloudClient.sharedInstance().meeting?.startTime = startDate
             CloudClient.sharedInstance().meeting?.endTime = endDate
-            let onlyStringDate = noTimedateFormatter.stringFromDate(startDate!)
-            let dateOnly = noTimedateFormatter.dateFromString(onlyStringDate)
-            let timeZoneSeconds = NSTimeZone.localTimeZone().secondsFromGMT
-            let  dateInLocalTimezone = dateOnly!.dateByAddingTimeInterval(NSTimeInterval(timeZoneSeconds))
+            let onlyStringDate = noTimedateFormatter.string(from: startDate!)
+            let dateOnly = noTimedateFormatter.date(from: onlyStringDate)
+            let timeZoneSeconds = NSTimeZone.local.secondsFromGMT()
+            let  dateInLocalTimezone = dateOnly!.addingTimeInterval(TimeInterval(timeZoneSeconds))
             CloudClient.sharedInstance().meeting?.sectionDate = dateInLocalTimezone
-            dismissViewControllerAnimated(true, completion: nil)
+            dismiss(animated: true, completion: nil)
         }
     }
     
-    @IBAction func cancel(sender: UIButton) {
-        dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func cancel(_ sender: UIButton) {
+        dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func dateChanged(sender: UIDatePicker) {
+    @IBAction func dateChanged(_ sender: UIDatePicker) {
         
         if datetimeLabelInFocus === startTimeLabel {
             startTimeLabel.text = "Start " + formatDate(sender.date)
@@ -184,7 +184,7 @@ class MeetingDateTimeViewController: UIViewController {
        
         if  let startDate = startDate {
             if let endDate = endDate {
-                if startDate.isLaterThanDate(endDate) {
+                if (startDate as NSDate).isLaterThanDate(aDate: endDate as NSDate) {
                     errroLabel.text = "Start date must be before end date"
                     return false
                 }
@@ -205,16 +205,16 @@ class MeetingDateTimeViewController: UIViewController {
 
 extension MeetingDateTimeViewController: UIViewControllerTransitioningDelegate {
     
-    func presentationControllerForPresentedViewController(presented: UIViewController, presentingViewController presenting: UIViewController!, sourceViewController source: UIViewController) -> UIPresentationController? {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController??, source: UIViewController) -> UIPresentationController? {
         
-        return DimmingPresentationViewController(presentedViewController: presented, presentingViewController: presenting)
+        return DimmingPresentationViewController(presentedViewController: presented, presenting: presenting!)
     }
     
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return BounceAnimationController()
     }
     
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         
         let tabbarController = dismissed.presentingViewController as! UITabBarController
         
@@ -229,7 +229,7 @@ extension MeetingDateTimeViewController: UIViewControllerTransitioningDelegate {
 }
 
 extension MeetingDateTimeViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         return (touch.view === view)
     }
 }

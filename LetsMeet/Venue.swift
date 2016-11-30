@@ -18,27 +18,27 @@ class Venue: NSObject, NSCoding{
     var imagesURL: Array<String>?
     
     required init(coder aDecoder: NSCoder) {
-        venueId = aDecoder.decodeObjectForKey("VenueId") as? String
-        name = aDecoder.decodeObjectForKey("Name") as? String
-        formattedAddress = aDecoder.decodeObjectForKey("FormattedAddress") as? String
-        imagesURL = aDecoder.decodeObjectForKey("ImagesURL") as? Array<String>
+        venueId = aDecoder.decodeObject(forKey: "VenueId") as? String
+        name = aDecoder.decodeObject(forKey: "Name") as? String
+        formattedAddress = aDecoder.decodeObject(forKey: "FormattedAddress") as? String
+        imagesURL = aDecoder.decodeObject(forKey: "ImagesURL") as? Array<String>
        
-        let lattitude =  aDecoder.decodeDoubleForKey("Lattitude")
-        let longitude =  aDecoder.decodeDoubleForKey("Longitude")
+        let lattitude =  aDecoder.decodeDouble(forKey: "Lattitude")
+        let longitude =  aDecoder.decodeDouble(forKey: "Longitude")
         coordinate = CLLocationCoordinate2D(latitude: lattitude, longitude: longitude)
         
         super.init()
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(venueId, forKey: "VenueId")
-        aCoder.encodeObject(name, forKey: "Name")
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(venueId, forKey: "VenueId")
+        aCoder.encode(name, forKey: "Name")
         if coordinate != nil {
-            aCoder.encodeDouble(coordinate!.latitude, forKey: "Lattitude")
-            aCoder.encodeDouble(coordinate!.longitude, forKey: "Longitude")
+            aCoder.encode(coordinate!.latitude, forKey: "Lattitude")
+            aCoder.encode(coordinate!.longitude, forKey: "Longitude")
         }
-        aCoder.encodeObject(formattedAddress, forKey: "FormattedAddress")
-        aCoder.encodeObject(imagesURL, forKey: "ImagesURL")
+        aCoder.encode(formattedAddress, forKey: "FormattedAddress")
+        aCoder.encode(imagesURL, forKey: "ImagesURL")
     }
    
    // * Construct a Venue from a available fields */
@@ -72,7 +72,9 @@ class Venue: NSObject, NSCoding{
             self.formattedAddress = (addressLine1 != nil ? "\(addressLine1!)" : "" ) + (addressLine2 != nil ? " , \(addressLine2!)" : "" )
             
             if self.formattedAddress != nil {
-            self.formattedAddress = count(self.formattedAddress!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())) > 0 ? self.formattedAddress! : nil
+                
+                
+            self.formattedAddress = self.formattedAddress!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).characters.count > 0 ? self.formattedAddress! : nil
             }
             
         }
@@ -81,7 +83,7 @@ class Venue: NSObject, NSCoding{
     }
     
     /* Helper: Given an array of dictionaries, convert them to an array of StudentInformation objects */
-    static func venuesFromResults(results: [[String : AnyObject]]) -> [Venue] {
+    static func venuesFromResults(_ results: [[String : AnyObject]]) -> [Venue] {
         var venues = [Venue]()
         
         for result in results {

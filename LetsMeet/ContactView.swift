@@ -9,9 +9,9 @@
 import UIKit
 
 protocol ContactViewDelegate : NSObjectProtocol {
-    func contactViewSelected(contactView: ContactView)
-    func contactViewWasUnselected(contactView: ContactView)
-    func contactViewShouldBeRemoved(contactView: ContactView)
+    func contactViewSelected(_ contactView: ContactView)
+    func contactViewWasUnselected(_ contactView: ContactView)
+    func contactViewShouldBeRemoved(_ contactView: ContactView)
 }
 
 class ContactView: UIView , UITextViewDelegate, UITextInputTraits, ContactTextFieldDelegate {
@@ -24,7 +24,7 @@ class ContactView: UIView , UITextViewDelegate, UITextInputTraits, ContactTextFi
     let kDefaultBorderWidth = 1
     let kDefaultCornerRadiusFactor = 5
     
-    let kColorSelectedText = UIColor.whiteColor()
+    let kColorSelectedText = UIColor.white
     let kColorSelectedGradientTop = UIColor(red: 79.0/255.0, green: 132.0/255.0, blue: 255.0/255.0, alpha: 1.0)
     let kColorSelectedGradientBottom = UIColor(red: 73.0/255.0, green: 58.0/255.0, blue: 242.0/255.0, alpha: 1.0)
     let kColorSelectedBorder = UIColor(red: 56.0/255.0, green: 0.0/255.0, blue: 233.0/255.0, alpha: 1.0)
@@ -38,7 +38,7 @@ class ContactView: UIView , UITextViewDelegate, UITextInputTraits, ContactTextFi
     var k7ColorGradientBottom: UIColor? =  nil
     var  k7ColorBorder: UIColor? = nil
     
-    let k7ColorSelectedText = UIColor.whiteColor()
+    let k7ColorSelectedText = UIColor.white
     let k7ColorSelectedGradientTop = UIColor(red: 0.0/255.0, green: 122.0/255.0, blue: 1.0, alpha: 1.0)
     let k7ColorSelectedGradientBottom = UIColor(red: 0.0/255.0, green: 122.0/255.0, blue: 1.0, alpha: 1.0)
     let k7ColorSelectedBorder: UIColor? =  nil
@@ -59,13 +59,13 @@ class ContactView: UIView , UITextViewDelegate, UITextInputTraits, ContactTextFi
     
 
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
      init(name: String, style: ContactBubbleStyle?, selectedStyle: ContactBubbleStyle?, showComma: Bool) {
         
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRect.zero)
         
         self.name = name
         self.isSelected = false
@@ -98,7 +98,7 @@ class ContactView: UIView , UITextViewDelegate, UITextInputTraits, ContactTextFi
     func setupView() {
         // Create a new label
         label = UILabel()
-        label!.backgroundColor = UIColor.clearColor()
+        label!.backgroundColor = UIColor.clear
         if showComma {
             label!.text =   name! + ","
 
@@ -109,14 +109,14 @@ class ContactView: UIView , UITextViewDelegate, UITextInputTraits, ContactTextFi
         
         // Create a new textField
         textField = ContactTextField()
-        textField!.autocorrectionType = UITextAutocorrectionType.No
+        textField!.autocorrectionType = UITextAutocorrectionType.no
         textField!.contactTextFieldDelegate = self
-        textField!.hidden = true
+        textField!.isHidden = true
         addSubview(textField!)
         
         
         // Create a tapgesture
-        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTapGesture"))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ContactView.handleTapGesture))
         tapGesture.numberOfTapsRequired = 1
         tapGesture.numberOfTouchesRequired = 1
         addGestureRecognizer(tapGesture)
@@ -154,12 +154,12 @@ class ContactView: UIView , UITextViewDelegate, UITextInputTraits, ContactTextFi
         label!.frame = frame
         
         //Adjust view frame
-        bounds = CGRectMake(0, 0, frame.size.width + 2 * kHorizontalPadding, frame.size.height + 2 * kVerticalPadding)
+        bounds = CGRect(x: 0, y: 0, width: frame.size.width + 2 * kHorizontalPadding, height: frame.size.height + 2 * kVerticalPadding)
         
         // Create gradient layer
         if gradientLayer == nil {
             gradientLayer = CAGradientLayer()
-            layer.insertSublayer(gradientLayer!, atIndex: 0)
+            layer.insertSublayer(gradientLayer!, at: 0)
             
         }
         gradientLayer!.frame = self.bounds
@@ -187,11 +187,11 @@ class ContactView: UIView , UITextViewDelegate, UITextInputTraits, ContactTextFi
         let viewLayer:CALayer = self.layer
         
         if self.selectedStyle!.borderColor != nil {
-        viewLayer.borderColor = self.selectedStyle!.borderColor!.CGColor
+        viewLayer.borderColor = self.selectedStyle!.borderColor!.cgColor
         }
         
         if self.selectedStyle!.gradientTop != nil && self.selectedStyle!.gradientTop != nil {
-        gradientLayer!.colors = [self.selectedStyle!.gradientTop!.CGColor,self.selectedStyle!.gradientBottom!.CGColor]
+        gradientLayer!.colors = [self.selectedStyle!.gradientTop!.cgColor,self.selectedStyle!.gradientBottom!.cgColor]
         }
         
         label!.textColor = self.selectedStyle!.textColor
@@ -214,11 +214,11 @@ class ContactView: UIView , UITextViewDelegate, UITextInputTraits, ContactTextFi
         let viewLayer:CALayer = self.layer
         
         if self.style!.borderColor != nil {
-            viewLayer.borderColor = self.style!.borderColor!.CGColor
+            viewLayer.borderColor = self.style!.borderColor!.cgColor
         }
         
         if self.style!.gradientTop != nil && self.style!.gradientBottom != nil {
-            gradientLayer!.colors = [self.style!.gradientTop!.CGColor,self.style!.gradientBottom!.CGColor]
+            gradientLayer!.colors = [self.style!.gradientTop!.cgColor,self.style!.gradientBottom!.cgColor]
         }
         
         label!.textColor = self.style!.textColor
@@ -250,18 +250,18 @@ class ContactView: UIView , UITextViewDelegate, UITextInputTraits, ContactTextFi
     
     //MARK:- UITextFieldDelegate
     
-    func textFieldDidHitBackspaceWithEmptyText(textField: ContactTextField) {
+    func textFieldDidHitBackspaceWithEmptyText(_ textField: ContactTextField) {
         
         print("textFieldDidHitBackspaceWithEmptyText For ContactView")
        
-        self.textField!.hidden = false
+        self.textField!.isHidden = false
         
         // Capture "delete" key press when cell is empty
         self.delegate?.contactViewShouldBeRemoved(self)
         
     }
     
-    func textFieldDidChange(textField: ContactTextField) {
+    func textFieldDidChange(_ textField: ContactTextField) {
         unSelect()
         self.delegate?.contactViewWasUnselected(self)
         self.textField!.text = nil

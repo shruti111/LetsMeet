@@ -12,14 +12,14 @@ import CoreData
 class FourSquareClient: NSObject {
     
     /* Shared session */
-    var session: NSURLSession
+    var session: URLSession
     
     var sharedContext: NSManagedObjectContext {
         return CoreDataStackManager.sharedInstance().managedObjectContext!
     }
     
     override init() {
-        session = NSURLSession.sharedSession()
+        session = URLSession.shared
         super.init()
     }
     
@@ -35,21 +35,21 @@ class FourSquareClient: NSObject {
     
         
     /// Data task to download  image
-    func taskForImage(filePath:String, completionHandler :(imageDate:NSData?, error:NSError?) -> Void)-> NSURLSessionTask {
+    func taskForImage(_ filePath:String, completionHandler :@escaping (_ imageDate:Data?, _ error:NSError?) -> Void)-> URLSessionTask {
         
-        let url = NSURL(string: filePath)!
-        let request = NSURLRequest(URL: url)
+        let url = URL(string: filePath)!
+        let request = URLRequest(url: url)
         
         // Make the request
-        let task = session.dataTaskWithRequest(request) {
+        let task = session.dataTask(with: request, completionHandler: {
             data, response, downloadError in
             
             if let error = downloadError {
-                completionHandler(imageDate: data, error: error)
+                completionHandler(data, error as NSError?)
             } else {
-                completionHandler(imageDate: data, error: nil)
+                completionHandler(data, nil)
             }
-        }
+        }) 
         task.resume()
         return task
         

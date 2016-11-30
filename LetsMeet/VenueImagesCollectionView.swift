@@ -17,35 +17,35 @@ class VenueImagesCollectionView: UICollectionView, UICollectionViewDataSource, U
     var locationName:String?
     
     //MARK: UICollectionViewDataSource Methods
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 
          return imageUrls != nil ? imageUrls!.count : 1
     }
     
 
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     
         // Set collection view cell
         if imageUrls == nil {
-            let cell =  collectionView.dequeueReusableCellWithReuseIdentifier("venueImageCell", forIndexPath: indexPath) as! UICollectionViewCell
+            let cell =  collectionView.dequeueReusableCell(withReuseIdentifier: "venueImageCell", for: indexPath) 
             let venueImageView =  cell.viewWithTag(500) as! UIImageView
             venueImageView.image = UIImage(named: "noPhoto")
             return cell
         }
         
-        var downloadTask: NSURLSessionTask? = nil
+        var downloadTask: URLSessionTask? = nil
         downloadTask?.cancel()
         
-        let cell =  collectionView.dequeueReusableCellWithReuseIdentifier("venueImageCell", forIndexPath: indexPath) as! UICollectionViewCell
+        let cell =  collectionView.dequeueReusableCell(withReuseIdentifier: "venueImageCell", for: indexPath) 
         let venueImageView =  cell.viewWithTag(500) as! UIImageView
         var cellImage = UIImage(named: "imagePlaceholder")
         venueImageView.image = nil
         let downloadActivityIndicatorView = cell.viewWithTag(600) as! UIActivityIndicatorView
         
-        let venueImageUrl = imageUrls![indexPath.row]
+        let venueImageUrl = imageUrls![(indexPath as NSIndexPath).row]
                     
         
         //Start the task that will eventually download the image
@@ -53,16 +53,16 @@ class VenueImagesCollectionView: UICollectionView, UICollectionViewDataSource, U
         
         downloadTask = FourSquareClient.sharedInstance().taskForImage(venueImageUrl) {
                 data, error in
-              dispatch_async(dispatch_get_main_queue()) {
+              DispatchQueue.main.async {
                 if let downloaderror = error {
                     print("LetsMeet image download error: \(downloaderror.localizedDescription)")
                     downloadActivityIndicatorView.stopAnimating()
                 } else if let imageData = data {
                     
-                    if  imageData.length != 0 {
+                    if  imageData.count != 0 {
                     // Create the image
                     var image = UIImage(data: imageData)
-                    image = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
+                    image = image?.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
                     venueImageView.image = image
                     downloadActivityIndicatorView.stopAnimating()
                     
@@ -70,7 +70,7 @@ class VenueImagesCollectionView: UICollectionView, UICollectionViewDataSource, U
                             downloadActivityIndicatorView.stopAnimating()
                     }
                 } else {
-                    println("Data is not convertible to Image Data.")
+                    print("Data is not convertible to Image Data.")
                     downloadActivityIndicatorView.stopAnimating()
                 }
             }

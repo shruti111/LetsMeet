@@ -14,24 +14,24 @@ class ContactTextField: UITextField {
      weak var contactTextFieldDelegate:ContactTextFieldDelegate?
     
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
   override  init(frame: CGRect) {
         super.init(frame: frame)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("textFieldTextDidChange:"), name: UITextFieldTextDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ContactTextField.textFieldTextDidChange(_:)), name: NSNotification.Name.UITextFieldTextDidChange, object: nil)
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     // Delete contact handle
-    func keyboardInputShouldDelete(textField: UITextField) -> Bool {
+    func keyboardInputShouldDelete(_ textField: UITextField) -> Bool {
        var shouldDelete = true
-        println("ShouldDelete value is \(shouldDelete)")
-        if count(textField.text) == 0 {
+        print("ShouldDelete value is \(shouldDelete)")
+        if (textField.text!.characters.count) == 0 {
             deleteBackward()
         }
        return shouldDelete
@@ -39,23 +39,23 @@ class ContactTextField: UITextField {
     
     override func deleteBackward() -> Void {
        
-        let  isTextFieldEmpty = count(text) == 0
+        let  isTextFieldEmpty = (text?.characters.count) == 0
         
         if isTextFieldEmpty {
-            if self.contactTextFieldDelegate != nil && self.contactTextFieldDelegate!.respondsToSelector(Selector("textFieldDidHitBackspaceWithEmptyText:")) {
-                println("Delete backward called for isTextFieldEmpty")
+            if self.contactTextFieldDelegate != nil && self.contactTextFieldDelegate!.responds(to: Selector("textFieldDidHitBackspaceWithEmptyText:")) {
+                print("Delete backward called for isTextFieldEmpty")
                 self.contactTextFieldDelegate!.textFieldDidHitBackspaceWithEmptyText(self)
             }
         }
-        println("Delete backward called")
+        print("Delete backward called")
         super.deleteBackward()
     }
     
-    func textFieldTextDidChange(notification:NSNotification) {
-        if notification.object === self  {
+    func textFieldTextDidChange(_ notification:Notification) {
+        if (notification.object as! AnyObject ) === self  {
             //Since ContactView.textView is a ContactTextField
             if self.contactTextFieldDelegate != nil &&
-                self.contactTextFieldDelegate!.respondsToSelector(Selector("textFieldDidChange:")) {
+                self.contactTextFieldDelegate!.responds(to: Selector("textFieldDidChange:")) {
                     self.contactTextFieldDelegate!.textFieldDidChange(self)
             }
         }
@@ -65,7 +65,7 @@ class ContactTextField: UITextField {
 
 protocol ContactTextFieldDelegate :UITextFieldDelegate {
 
-func textFieldDidChange(textField:ContactTextField)
-func textFieldDidHitBackspaceWithEmptyText(textField: ContactTextField)
+func textFieldDidChange(_ textField:ContactTextField)
+func textFieldDidHitBackspaceWithEmptyText(_ textField: ContactTextField)
 
 }

@@ -12,32 +12,32 @@ import UIKit
 // Bounce effect when View controller is Presented on screen Modally
 class BounceAnimationController: NSObject, UIViewControllerAnimatedTransitioning {
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.4
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         
         // This animation is performed on the ViewController which is shown modally
-        if let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) {
-            if let toView = transitionContext.viewForKey(UITransitionContextToViewKey) {
+        if let toViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) {
+            if let toView = transitionContext.view(forKey: UITransitionContextViewKey.to) {
                 
-                toView.frame = transitionContext.finalFrameForViewController(toViewController)
+                toView.frame = transitionContext.finalFrame(for: toViewController)
                 
-                let containerView = transitionContext.containerView()
+                let containerView = transitionContext.containerView
                 containerView.addSubview(toView)
                 
-                toView.transform = CGAffineTransformMakeScale(0.4, 0.4)
+                toView.transform = CGAffineTransform(scaleX: 0.4, y: 0.4)
                 
-                UIView.animateKeyframesWithDuration(transitionDuration(transitionContext), delay: 0.0, options: .CalculationModeCubic, animations: {
+                UIView.animateKeyframes(withDuration: transitionDuration(using: transitionContext), delay: 0.0, options: .calculationModeCubic, animations: {
                     
                     // Change the size of the view controller from 80% to 100% with 0.5 sec of Time Duration
-                    UIView.addKeyframeWithRelativeStartTime(0.0, relativeDuration: 0.333, animations: {
-                        toView.transform = CGAffineTransformMakeScale(0.8, 0.8)
+                    UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.333, animations: {
+                        toView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
                     })
 
-                    UIView.addKeyframeWithRelativeStartTime(0.5, relativeDuration: 0.333, animations: {
-                        toView.transform = CGAffineTransformMakeScale(1.0, 1.0)
+                    UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.333, animations: {
+                        toView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
                     })
                     
                     }, completion: { finished in

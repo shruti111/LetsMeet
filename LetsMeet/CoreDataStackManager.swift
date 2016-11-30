@@ -25,11 +25,11 @@ class CoreDataStackManager {
     //MARK:- The Core Data Stack
     
     // Documents Directory URL - the path the sqlite file
-    lazy var applicationDocumentsDirectory:NSURL? = {
-        let urls = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask)
+    lazy var applicationDocumentsDirectory:URL? = {
+        let urls = FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: FileManager.SearchPathDomainMask.userDomainMask)
         
         if urls.count > 0 {
-            if let url = urls[urls.count-1] as? NSURL {
+            if let url = urls[urls.count-1] as? URL {
                 print(url)
                 return url
             }
@@ -40,8 +40,8 @@ class CoreDataStackManager {
     // The managed object property for the application
     lazy var managedObjectModel: NSManagedObjectModel? = {
         
-        if  let modelURL = NSBundle.mainBundle().URLForResource("Model", withExtension: "momd") {
-            if let managedObjectModel = NSManagedObjectModel(contentsOfURL: modelURL) {
+        if  let modelURL = Bundle.main.url(forResource: "Model", withExtension: "momd") {
+            if let managedObjectModel = NSManagedObjectModel(contentsOf: modelURL) {
                 return managedObjectModel
             }
         }
@@ -60,12 +60,12 @@ class CoreDataStackManager {
             
             if let appURL = self.applicationDocumentsDirectory {
                 
-                let url = appURL.URLByAppendingPathComponent(SQLITE_FILE_NAME)
-                
-                var error:NSError? = nil
-                
-                if coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil, error: &error) != nil {
-                    return coordinator
+                let url = appURL.appendingPathComponent(SQLITE_FILE_NAME)
+                do {
+                try coordinator!.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: nil)
+                } catch {
+                    print("unable to add store at \(url)")
+
                 }
             }
         }
@@ -85,16 +85,10 @@ class CoreDataStackManager {
         }()
     
     //MARK:- Save Core Data Objects
-    func saveContext() -> Bool {
-        if let context = managedObjectContext {
-            var error:NSError? = nil
-            if context.hasChanges && !context.save(&error) {
-                return false
-            } else {
-                return true
-            }
+    func saveContext() throws {
+        if managedObjectContext!.hasChanges {
+            try managedObjectContext!.save()
         }
-        return false
     }
     
 }

@@ -31,10 +31,10 @@ class MyContactPickerViewController: UIViewController, UITableViewDelegate,UITab
     var contactsLoadingActivityIndicator:UIActivityIndicatorView?
     var addContactBarButton: UIBarButtonItem!
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        addContactBarButton = UIBarButtonItem(title: "Add", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("getAllContacts:"))
+        addContactBarButton = UIBarButtonItem(title: "Add", style: UIBarButtonItemStyle.plain, target: self, action: #selector(MyContactPickerViewController.getAllContacts(_:)))
         if AddressBookClient.sharedInstance().contactsRetrieved {
             navigationItem.rightBarButtonItem = addContactBarButton
             self.contacts = AddressBookClient.sharedInstance().contacts
@@ -51,26 +51,26 @@ class MyContactPickerViewController: UIViewController, UITableViewDelegate,UITab
         super.viewDidLoad()
         
         navigationItem.rightBarButtonItems?.append(infoButton)
-        edgesForExtendedLayout = UIRectEdge.Bottom | UIRectEdge.Left | UIRectEdge.Right
+        edgesForExtendedLayout = [UIRectEdge.bottom , UIRectEdge.left , UIRectEdge.right]
         
         // Initialize and add Contact Picker View
         let statusBarNavigationBarHeight:CGFloat = 0
         contactPickerView = MyContactPickerView(frame: CGRect(x: 0,y: statusBarNavigationBarHeight,width: self.view.frame.size.width, height: kpickerViewHeight))
         contactPickerView!.font = tableViewCellLabelFont()
-        contactPickerView!.autoresizingMask = UIViewAutoresizing.FlexibleBottomMargin | UIViewAutoresizing.FlexibleWidth
+        contactPickerView!.autoresizingMask = [UIViewAutoresizing.flexibleBottomMargin , UIViewAutoresizing.flexibleWidth]
         contactPickerView!.delegate = self
         contactPickerView!.setPlaceholderLabelText("Who would you like to invite?")
         contactPickerView!.setPromptLabelText("To:")
         view.addSubview(contactPickerView!)
         
         var layer = contactPickerView!.layer
-        layer.shadowColor = UIColor(red: 225.0/255.0, green: 226.0/255.0, blue: 228.0/255.0, alpha: 1).CGColor
+        layer.shadowColor = UIColor(red: 225.0/255.0, green: 226.0/255.0, blue: 228.0/255.0, alpha: 1).cgColor
         layer.shadowOffset = CGSize(width: 0, height: 2)
         layer.shadowOpacity = 1
         layer.shadowRadius = 1.0
         
          if !AddressBookClient.sharedInstance().contactsRetrieved {
-            contactPickerView!.textField?.enabled = false
+            contactPickerView!.textField?.isEnabled = false
         }
         
         // Fill the rest of the view with the table view
@@ -78,24 +78,24 @@ class MyContactPickerViewController: UIViewController, UITableViewDelegate,UITab
             x: 0,
             y: (contactPickerView!.frame.origin.y + contactPickerView!.frame.size.height),
             width: view.frame.size.width,
-            height: view.frame.size.height -  statusBarNavigationBarHeight - contactPickerView!.frame.size.height), style: UITableViewStyle.Plain)
-         contactPickerView!.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
+            height: view.frame.size.height -  statusBarNavigationBarHeight - contactPickerView!.frame.size.height), style: UITableViewStyle.plain)
+         contactPickerView!.autoresizingMask = [UIViewAutoresizing.flexibleWidth ,UIViewAutoresizing.flexibleHeight]
         contactsTableView!.delegate = self
         contactsTableView!.dataSource = self
         contactsTableView!.rowHeight = 60
-        contactsTableView!.tableFooterView = UIView(frame: CGRectZero)
-        contactsTableView!.tableFooterView?.hidden = true
+        contactsTableView!.tableFooterView = UIView(frame: CGRect.zero)
+        contactsTableView!.tableFooterView?.isHidden = true
         view.insertSubview(contactsTableView!, belowSubview: contactPickerView!)
         
         var cellNib = UINib(nibName: "ContactTableViewCell", bundle: nil)
-        contactsTableView!.registerNib(cellNib, forCellReuseIdentifier: contactPickerContactCellReuseID)
+        contactsTableView!.register(cellNib, forCellReuseIdentifier: contactPickerContactCellReuseID)
         
        contactsLoadingActivityIndicator?.color =  landingScreenFilledButtonTintColor()
         if !CloudClient.sharedInstance().canSearchForAddressbookContacts {
             contactsLoadingActivityIndicator?.stopAnimating()
             navigationItem.prompt = nil
             navigationItem.rightBarButtonItem = addContactBarButton
-            contactPickerView!.textField?.enabled = true
+            contactPickerView!.textField?.isEnabled = true
             
         }
         if let userSelectedContacts = CloudClient.sharedInstance().meeting?.invitees  {
@@ -110,18 +110,18 @@ class MyContactPickerViewController: UIViewController, UITableViewDelegate,UITab
         adjustTableViewFrame()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardDidShow:"), name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardDidHide:"), name: UIKeyboardDidHideNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("contactsFetchedFromiCloud:"), name: AddressBookClient.sharedInstance().CONTACTSADDEDNOTIFICATION, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MyContactPickerViewController.keyboardDidShow(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MyContactPickerViewController.keyboardDidHide(_:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MyContactPickerViewController.contactsFetchedFromiCloud(_:)), name: NSNotification.Name(rawValue: AddressBookClient.sharedInstance().CONTACTSADDEDNOTIFICATION), object: nil)
     }
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     // Show  contatcs of user having iCloud account
-    func contactsFetchedFromiCloud(notification:NSNotification) {
+    func contactsFetchedFromiCloud(_ notification:Notification) {
         if let contactsAdded = notification.object as? Bool {
             if contactsAdded {
                 if let activityIndicatorView = contactsLoadingActivityIndicator {
@@ -129,14 +129,14 @@ class MyContactPickerViewController: UIViewController, UITableViewDelegate,UITab
                     self.contacts = AddressBookClient.sharedInstance().contacts
                     navigationItem.prompt = nil
                     navigationItem.rightBarButtonItem = addContactBarButton
-                    contactPickerView!.textField?.enabled = true
+                    contactPickerView!.textField?.isEnabled = true
                 }
             }
         }
     }
     
     
-    func adjustTableViewInsetTop(topInset:CGFloat, bottomInset:CGFloat) {
+    func adjustTableViewInsetTop(_ topInset:CGFloat, bottomInset:CGFloat) {
         contactsTableView!.contentInset = UIEdgeInsets(top: topInset, left: contactsTableView!.contentInset.left, bottom: bottomInset, right: contactsTableView!.contentInset.right)
         contactsTableView!.scrollIndicatorInsets = contactsTableView!.contentInset
     }
@@ -144,40 +144,40 @@ class MyContactPickerViewController: UIViewController, UITableViewDelegate,UITab
     func adjustTableViewFrame() {
        
         let yOffset = contactPickerView!.frame.origin.y + contactPickerView!.frame.size.height
-        let tableFrame = CGRectMake(0, yOffset, view.frame.size.width, view.frame.size.height - yOffset)
+        let tableFrame = CGRect(x: 0, y: yOffset, width: view.frame.size.width, height: view.frame.size.height - yOffset)
         contactsTableView!.frame = tableFrame;
     }
     
-    func adjustTableViewInsetTop(topInset:CGFloat){
+    func adjustTableViewInsetTop(_ topInset:CGFloat){
         adjustTableViewInsetTop(topInset, bottomInset: contactsTableView!.contentInset.bottom)
     }
     
-    func adjustTableViewInsetBottom(bottomInset:CGFloat) {
+    func adjustTableViewInsetBottom(_ bottomInset:CGFloat) {
         adjustTableViewInsetTop(contactsTableView!.contentInset.top, bottomInset:bottomInset)
     }
 
     
     //MARK:- UITableViewDelegate and DataSource Methods
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return filteredContacts.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // Get the desired contact from the filteredContacts array
-        let contact = filteredContacts[indexPath.row]
+        let contact = filteredContacts[(indexPath as NSIndexPath).row]
        
         // Initialize the table view cell
         
-        var cell = tableView.dequeueReusableCellWithIdentifier(contactPickerContactCellReuseID) as? ContactTableViewCell
+        var cell = tableView.dequeueReusableCell(withIdentifier: contactPickerContactCellReuseID) as? ContactTableViewCell
         
         if cell == nil {
-            cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: contactPickerContactCellReuseID) as? ContactTableViewCell
+            cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: contactPickerContactCellReuseID) as? ContactTableViewCell
         }
         
         cell!.fullNameLabel!.text = contact.fullName
@@ -187,16 +187,16 @@ class MyContactPickerViewController: UIViewController, UITableViewDelegate,UITab
         return cell!
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
         
-        let cell = tableView.cellForRowAtIndexPath(indexPath) as! ContactTableViewCell
+        let cell = tableView.cellForRow(at: indexPath) as! ContactTableViewCell
         
         // This uses the custom cellView
-        let  user:Contact = filteredContacts[indexPath.row]
-       
-        if contains(selectedContacts, user) {
+        let  user:Contact = filteredContacts[(indexPath as NSIndexPath).row]
+       selectedContacts.contains(user)
+        if selectedContacts.contains(user) {
             // contact is already selected so remove it from ContactPickerView
             selectedContacts = selectedContacts.filter({
                 $0 != user
@@ -216,7 +216,7 @@ class MyContactPickerViewController: UIViewController, UITableViewDelegate,UITab
     
     //MARK:- ContactPickerTextViewDelegate
     
-    func contactPickerTextViewDidChange(textViewText: String) {
+    func contactPickerTextViewDidChange(_ textViewText: String) {
         
         if textViewText == "" {
             
@@ -227,20 +227,20 @@ class MyContactPickerViewController: UIViewController, UITableViewDelegate,UITab
              let predicate = NSPredicate(format: "self.%@ contains[cd] %@ OR self.%@ contains[cd] %@", "firstName",textViewText,"lastName", textViewText)
             
             filteredContacts = contacts.filter({
-                predicate.evaluateWithObject($0)
+                predicate.evaluate(with: $0)
             })
             
         }
         self.contactsTableView!.reloadData()
     }
     
-    func contactPickerDidRemoveContact(contact: Contact) {
+    func contactPickerDidRemoveContact(_ contact: Contact) {
         selectedContacts = selectedContacts.filter({
             $0 != contact
         })
     }
     
-    func contactPickerDidResize(contactPickerView: MyContactPickerView) {
+    func contactPickerDidResize(_ contactPickerView: MyContactPickerView) {
        var frame = contactsTableView!.frame
        frame.origin.y = contactPickerView.frame.size.height + contactPickerView.frame.origin.y
         contactsTableView!.frame = frame
@@ -248,29 +248,29 @@ class MyContactPickerViewController: UIViewController, UITableViewDelegate,UITab
     }
     
    
-    func contactPickerTextFieldShouldReturn(textField: UITextField) -> Bool {
+    func contactPickerTextFieldShouldReturn(_ textField: UITextField) -> Bool {
         return true
     }
     
     //MARK:-  Keyboard Methods
     
-    func keyboardDidShow(notification:NSNotification) {
+    func keyboardDidShow(_ notification:Notification) {
         
-        let info = notification.userInfo!
+        let info = (notification as NSNotification).userInfo!
         
-        let keyboardFrame = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        let keyboardFrame = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
-        let kbRect = view.convertRect(keyboardFrame , fromView: view.window!)
+        let kbRect = view.convert(keyboardFrame , from: view.window!)
         
         adjustTableViewInsetBottom(contactsTableView!.frame.origin.y + contactsTableView!.frame.size.height - kbRect.origin.y)
     }
     
-    func keyboardDidHide(notification:NSNotification) {
+    func keyboardDidHide(_ notification:Notification) {
         
         
-        let info = notification.userInfo!
-        let keyboardFrame = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
-        let kbRect = view.convertRect(keyboardFrame, fromView: view.window!)
+        let info = (notification as NSNotification).userInfo!
+        let keyboardFrame = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let kbRect = view.convert(keyboardFrame, from: view.window!)
         
         adjustTableViewInsetBottom(contactsTableView!.frame.origin.y + contactsTableView!.frame.size.height - kbRect.origin.y)
 
@@ -278,27 +278,27 @@ class MyContactPickerViewController: UIViewController, UITableViewDelegate,UITab
     
     //MARK:- ABPersonViewControllerDelegate
     
-    func personViewController(personViewController: ABPersonViewController!, shouldPerformDefaultActionForPerson person: ABRecord!, property: ABPropertyID, identifier: ABMultiValueIdentifier) -> Bool {
+    func personViewController(_ personViewController: ABPersonViewController!, shouldPerformDefaultActionForPerson person: ABRecord!, property: ABPropertyID, identifier: ABMultiValueIdentifier) -> Bool {
         return true
     }
     
-    @IBAction func cancel(sender: UIBarButtonItem) {
-         dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func cancel(_ sender: UIBarButtonItem) {
+         dismiss(animated: true, completion: nil)
     }
     //MARK:- Take contacts and go ahead
     
-    @IBAction func getAllContacts(sender: UIBarButtonItem) {
+    @IBAction func getAllContacts(_ sender: UIBarButtonItem) {
         if selectedContacts.count > 0 {
             CloudClient.sharedInstance().meeting?.invitees = selectedContacts
-            println(self.selectedContacts)
+            print(self.selectedContacts)
         }
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 
-    @IBAction func showParticipantsInfoMessage(sender: UIBarButtonItem) {
-        let alert = UIAlertController(title: "Participants", message: "Your addressbook contacts who use this app and have iCloud id are shown here.", preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
-        self.presentViewController(alert, animated: true, completion: nil)
+    @IBAction func showParticipantsInfoMessage(_ sender: UIBarButtonItem) {
+        let alert = UIAlertController(title: "Participants", message: "Your addressbook contacts who use this app and have iCloud id are shown here.", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
 
     }
 

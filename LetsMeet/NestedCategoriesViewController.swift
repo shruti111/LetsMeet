@@ -23,48 +23,50 @@ class NestedCategoriesViewController: UICollectionViewController, NSFetchedResul
     }
 
     func performFetch() {
-        var error: NSError?
-        if !fetchedResultsController.performFetch(&error) {
-            println("Error performing initial fetch: \(error)")
-        }
+            do {
+                try fetchedResultsController.performFetch()
+            } catch let e as NSError {
+                print("Error performing initial fetch: \n\(e)\n\(fetchedResultsController)")
+            }
+        
     }
     
     deinit {
         fetchedResultsController.delegate = nil
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 5, left: 2, bottom: 5, right: 2)
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: (self.collectionView!.frame.size.width / 2) - 5, height: 48)
     }
     
     // MARK: UICollectionViewDataSource
 
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
        return self.fetchedResultsController.sections?.count ?? 0
     }
 
 
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let sectionInfo = self.fetchedResultsController.sections![section] as! NSFetchedResultsSectionInfo
         return sectionInfo.numberOfObjects
     }
 
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("nestedCategoryCell", forIndexPath: indexPath) as! NestedlocationCategoryCollectionViewCell
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "nestedCategoryCell", for: indexPath) as! NestedlocationCategoryCollectionViewCell
         
         configureCell(cell, atIndexPath: indexPath)
         
         return cell
     }
     
-    func configureCell(cell:NestedlocationCategoryCollectionViewCell, atIndexPath indexPath:NSIndexPath) {
+    func configureCell(_ cell:NestedlocationCategoryCollectionViewCell, atIndexPath indexPath:IndexPath) {
         
         // Show the placeholder image till the time image is being downloaded
-        let locationcategory = fetchedResultsController.objectAtIndexPath(indexPath) as! Locationcategory
+        let locationcategory = fetchedResultsController.object(at: indexPath) as! Locationcategory
         cell.categoryName.text = locationcategory.categoryName
         var cellImage = UIImage(named: "imagePlaceholder")
         cell.categoryIcon.image = cellImage
@@ -82,14 +84,14 @@ class NestedCategoriesViewController: UICollectionViewController, NSFetchedResul
                     
                     // Create the image
                     var image = UIImage(data: imageData)
-                    image = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+                    image = image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
                     
                     // update the cell later, on the main thread
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                         cell.categoryIcon.image = image
                     }
                 } else {
-                    println("Data is not convertible to Image Data.")
+                    print("Data is not convertible to Image Data.")
                 }
             }
             cell.taskToCancelifCellIsReused = task
@@ -100,11 +102,11 @@ class NestedCategoriesViewController: UICollectionViewController, NSFetchedResul
     
     
     // Reverse segue to set the category on Location Screen
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "PickedCategory" {
             let cell = sender as! UICollectionViewCell
-            if let indexPath = collectionView?.indexPathForCell(cell) {
-                let locationcategory = fetchedResultsController.objectAtIndexPath(indexPath) as! Locationcategory
+            if let indexPath = collectionView?.indexPath(for: cell) {
+                let locationcategory = fetchedResultsController.object(at: indexPath) as! Locationcategory
                 selectedCategory = locationcategory
             }
         }
@@ -114,8 +116,8 @@ class NestedCategoriesViewController: UICollectionViewController, NSFetchedResul
 
     //MARK:- Core Data
     
-    lazy var fetchedResultsController: NSFetchedResultsController = {
-        let fetchRequest = NSFetchRequest(entityName: "Locationcategory")
+    lazy var fetchedResultsController: NSFetchedResultsController<NSManagedObject> = {
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Locationcategory")
         fetchRequest.sortDescriptors = []
         fetchRequest.predicate = NSPredicate(format: "parentId == %@", self.parentCategory!.categoryId)
         let fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)

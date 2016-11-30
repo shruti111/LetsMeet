@@ -23,42 +23,42 @@ class Contact:NSObject, NSCoding {
         super.init()
     }
     
-    convenience init(attributes:[NSObject : AnyObject]) {
+    convenience init(attributes:[AnyHashable: Any]) {
         self.init()
-        self.setValuesForKeysWithDictionary(attributes)
+        self.setValuesForKeys(attributes as! [String : Any])
     }
     
   required init(coder aDecoder: NSCoder) {
-        recordId = aDecoder.decodeIntegerForKey("RecordId")
-        firstName = aDecoder.decodeObjectForKey("FirstName") as? String
-        lastName = aDecoder.decodeObjectForKey("LastName") as? String
-        email = aDecoder.decodeObjectForKey("Email") as? String
-        emailLabel = aDecoder.decodeObjectForKey("EmailLabel") as? String
-        selected = aDecoder.decodeBoolForKey("Selected")
-        cloudRecordId = aDecoder.decodeObjectForKey("CloudRecordId") as? String
+        recordId = aDecoder.decodeInteger(forKey: "RecordId")
+        firstName = aDecoder.decodeObject(forKey: "FirstName") as? String
+        lastName = aDecoder.decodeObject(forKey: "LastName") as? String
+        email = aDecoder.decodeObject(forKey: "Email") as? String
+        emailLabel = aDecoder.decodeObject(forKey: "EmailLabel") as? String
+        selected = aDecoder.decodeBool(forKey: "Selected")
+        cloudRecordId = aDecoder.decodeObject(forKey: "CloudRecordId") as? String
         super.init()
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
+    func encode(with aCoder: NSCoder) {
         
         if recordId != nil {
-        aCoder.encodeInteger(recordId!, forKey: "RecordId")
+        aCoder.encode(recordId!, forKey: "RecordId")
         }
-        aCoder.encodeObject(firstName, forKey: "FirstName")
-        aCoder.encodeObject(lastName, forKey: "LastName")
-        aCoder.encodeObject(email, forKey: "Email")
-        aCoder.encodeObject(emailLabel, forKey: "EmailLabel")
+        aCoder.encode(firstName, forKey: "FirstName")
+        aCoder.encode(lastName, forKey: "LastName")
+        aCoder.encode(email, forKey: "Email")
+        aCoder.encode(emailLabel, forKey: "EmailLabel")
         if selected != nil {
-        aCoder.encodeBool(selected!, forKey: "Selected")
+        aCoder.encode(selected!, forKey: "Selected")
         }
-        aCoder.encodeObject(cloudRecordId, forKey: "CloudRecordId")
+        aCoder.encode(cloudRecordId, forKey: "CloudRecordId")
     }
     
     //MARK:-  NSKeyValueCoding Protocol
     
-    override func setValue(value: AnyObject?, forKey key: String) {
+    override func setValue(_ value: Any?, forKey key: String) {
         if key == "id"  {
-            self.recordId = value!.integerValue
+            self.recordId = (value! as AnyObject).intValue
         } else if key == "firstName"  {
             self.firstName = value as? String
         } else if key == "lastName"  {
@@ -87,8 +87,8 @@ class Contact:NSObject, NSCoding {
     }
     
     // Copy contact when we have multiple email addresses
-    override func copy() -> AnyObject {
-        var copy = Contact()
+    override func copy() -> Any {
+        let copy = Contact()
         copy.recordId = self.recordId
         copy.firstName = self.firstName
         copy.lastName = self.lastName

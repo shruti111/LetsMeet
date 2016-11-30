@@ -11,10 +11,10 @@ import UIKit
 
 protocol MyContactPickerDelegate : NSObjectProtocol {
     
-    func contactPickerTextViewDidChange(textViewText:String)
-    func contactPickerDidRemoveContact(contact:Contact)
-    func contactPickerDidResize(contactView:MyContactPickerView)
-    func contactPickerTextFieldShouldReturn(textField:UITextField) -> Bool
+    func contactPickerTextViewDidChange(_ textViewText:String)
+    func contactPickerDidRemoveContact(_ contact:Contact)
+    func contactPickerDidResize(_ contactView:MyContactPickerView)
+    func contactPickerTextFieldShouldReturn(_ textField:UITextField) -> Bool
     
 }
 
@@ -46,9 +46,9 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
     var  maxNumberOfLines:Int = 2	// maximum number of lines the view will display before scrolling
   //  var font:UIFont?
     
-    private var shouldSelectTextView = false
-    private var lineCount = 1
-    private var frameOfLastView:CGRect?
+    fileprivate var shouldSelectTextView = false
+    fileprivate var lineCount = 1
+    fileprivate var frameOfLastView:CGRect?
     
     var scrollView:UIScrollView?
     var contacts = [Contact: ContactView]()   // Dictionary to store ContactViews for each contacts
@@ -60,7 +60,7 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
     var contactViewStyle:ContactBubbleStyle?
     var contactViewSelectedStyle:ContactBubbleStyle?
 
-  required  init(coder aDecoder: NSCoder) {
+  required  init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
@@ -78,17 +78,17 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
         scrollView = UIScrollView(frame: self.bounds)
         scrollView!.scrollsToTop = false
         scrollView!.delegate = self
-        scrollView!.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
+        scrollView!.autoresizingMask = [UIViewAutoresizing.flexibleWidth , UIViewAutoresizing.flexibleHeight]
         addSubview(scrollView!)
         
         // Add placeholder label
         placeholderLabel = UILabel()
-        placeholderLabel!.textColor = UIColor.grayColor()
-        placeholderLabel!.backgroundColor = UIColor.clearColor()
+        placeholderLabel!.textColor = UIColor.gray
+        placeholderLabel!.backgroundColor = UIColor.clear
         scrollView!.addSubview(placeholderLabel!)
         
         promptLabel = UILabel()
-        promptLabel!.backgroundColor = UIColor.clearColor()
+        promptLabel!.backgroundColor = UIColor.clear
         promptLabel!.text = nil
         promptLabel!.sizeToFit()
         scrollView!.addSubview(promptLabel!)
@@ -96,12 +96,12 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
         // Create TextView
         textField = ContactTextField()
         textField!.contactTextFieldDelegate = self
-        textField!.autocorrectionType = UITextAutocorrectionType.No
+        textField!.autocorrectionType = UITextAutocorrectionType.no
         
-        backgroundColor = UIColor.whiteColor()
+        backgroundColor = UIColor.white
         
         // Create a tapgesture
-        var tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTapGesture"))
+        var tapGesture = UITapGestureRecognizer(target: self, action: #selector(MyContactPickerView.handleTapGesture))
         tapGesture.numberOfTapsRequired = 1
         tapGesture.numberOfTouchesRequired = 1
         addGestureRecognizer(tapGesture)
@@ -134,35 +134,35 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
  
         }
         get {
-            return textField!.font
+            return textField!.font!
             
         }
     }
     
     
-    func setPromptLabelText(text:String) {
+    func setPromptLabelText(_ text:String) {
         promptLabel!.text = text
         updateLabelFrames()
         setNeedsLayout()
     }
     
-    func setPromptLabelAttributedText(text:NSAttributedString) {
+    func setPromptLabelAttributedText(_ text:NSAttributedString) {
         promptLabel!.attributedText = text
         updateLabelFrames()
         setNeedsLayout()
     }
     
-    func setPlaceholderLabelTextColor(color:UIColor) {
+    func setPlaceholderLabelTextColor(_ color:UIColor) {
         placeholderLabel!.textColor = color
     }
     
-    func setPlaceholderLabelText(text:String) {
+    func setPlaceholderLabelText(_ text:String) {
         placeholderLabel!.text = text
         setNeedsLayout()
     }
 
     
-    func setPromptLabelTextColor(color:UIColor) {
+    func setPromptLabelTextColor(_ color:UIColor) {
         promptLabel!.textColor = color
     }
     
@@ -174,10 +174,10 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
        
     }
     
-    func addContact(contact:Contact) {
+    func addContact(_ contact:Contact) {
         
-        if contains(contactKeys, contact) {
-            println("Can not contain the same object twice to MycontactPicker view")
+        if contactKeys.contains(contact) {
+            print("Can not contain the same object twice to MycontactPicker view")
             return
         }
         
@@ -212,12 +212,12 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
         layoutContactViews()
         
         // update size of the scrollView
-        UIView.animateWithDuration(0.2, animations: {
+        UIView.animate(withDuration: 0.2, animations: {
             self.layoutScrollView()
             }, completion: {
                 finished in
                  // scroll to bottom
-                self.shouldSelectTextView = self.isFirstResponder()
+                self.shouldSelectTextView = self.isFirstResponder
                 self.scrollToBottomWithAnimation(true)
                  // after scroll animation [self selectTextView] will be called
         })
@@ -225,7 +225,7 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
     }
     
     func selectTextView() {
-        textField!.hidden = false
+        textField!.isHidden = false
         textField!.becomeFirstResponder()
     }
     
@@ -235,27 +235,27 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
             value.removeFromSuperview()
         }
         
-        contacts.removeAll(keepCapacity: false)
-        contactKeys.removeAll(keepCapacity: false)
+        contacts.removeAll(keepingCapacity: false)
+        contactKeys.removeAll(keepingCapacity: false)
         setNeedsLayout()
         
-        textField!.hidden = false
+        textField!.isHidden = false
         textField!.text = ""
     }
     
-    func removeContact(contactToBeRemoved:Contact) {
+    func removeContact(_ contactToBeRemoved:Contact) {
         removeContactByKey(contactToBeRemoved)
     }
     
     override func resignFirstResponder() -> Bool {
-        if textField!.isFirstResponder() {
+        if textField!.isFirstResponder {
             textField!.resignFirstResponder()
         }
         return super.resignFirstResponder()
     }
     
-    override func isFirstResponder() -> Bool {
-        if textField!.isFirstResponder() {
+    override var isFirstResponder : Bool {
+        if textField!.isFirstResponder {
             return true
         } else if selectedContactView != nil {
             return true
@@ -263,7 +263,7 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
         return false
     }
     
-    func setContactViewStyle(style:ContactBubbleStyle, selectedStyle:ContactBubbleStyle) {
+    func setContactViewStyle(_ style:ContactBubbleStyle, selectedStyle:ContactBubbleStyle) {
         contactViewStyle = style
         textField!.textColor = style.textColor
         contactViewSelectedStyle = selectedStyle
@@ -284,10 +284,10 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
         return textField!.becomeFirstResponder()
     }
     
-    func scrollToBottomWithAnimation(animated:Bool) {
+    func scrollToBottomWithAnimation(_ animated:Bool) {
         if (animated){
             let size = scrollView!.contentSize
-            let frame = CGRectMake(0, size.height - scrollView!.frame.size.height, size.width, scrollView!.frame.size.height)
+            let frame = CGRect(x: 0, y: size.height - scrollView!.frame.size.height, width: size.width, height: scrollView!.frame.size.height)
             scrollView!.scrollRectToVisible(frame, animated: animated)
         } else {
             // this block is here because scrollRectToVisible with animated NO causes crashes on when the user tries to delete many contacts really quickly
@@ -297,8 +297,8 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
         }
     }
     
-    func removeContactView(contactView:ContactView) {
-        var contactToBeRemoved = contactForContactView(contactView)
+    func removeContactView(_ contactView:ContactView) {
+        let contactToBeRemoved = contactForContactView(contactView)
         
         if contactToBeRemoved == nil {
             return
@@ -314,7 +314,7 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
     }
     
     
-    func removeContactByKey(contactToBeRemoved:Contact) {
+    func removeContactByKey(_ contactToBeRemoved:Contact) {
         
         //Remove contact view from view
         let contactViewToBeremoved = contacts[contactToBeRemoved]
@@ -322,7 +322,7 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
             contactViewToBeremoved!.removeFromSuperview()
             
             //Remove contact from memory
-            contacts.removeValueForKey(contactToBeRemoved)
+            contacts.removeValue(forKey: contactToBeRemoved)
             contactKeys =  contactKeys.filter({
                 $0 != contactToBeRemoved
             })
@@ -331,19 +331,19 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
         }
         
         // update size of the scrollView
-        UIView.animateWithDuration(0.2, animations: {
+        UIView.animate(withDuration: 0.2, animations: {
             self.layoutScrollView()
             }, completion: {
                 finished in
                 // scroll to bottom
-                self.shouldSelectTextView = self.isFirstResponder()
+                self.shouldSelectTextView = self.isFirstResponder
                 self.scrollToBottomWithAnimation(true)
                 // after scroll animation [self selectTextView] will be called
         })
 
     }
     
-    func contactForContactView(contactView:ContactView) -> Contact? {
+    func contactForContactView(_ contactView:ContactView) -> Contact? {
         for (key,value) in contacts {
             if value === contactView {
                 return key
@@ -354,8 +354,8 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
     
     func updateLabelFrames() {
     promptLabel!.sizeToFit()
-    promptLabel!.frame = CGRectMake(kHorizontalSidePadding, verticalPadding, promptLabel!.frame.size.width, lineHeight)
-    placeholderLabel!.frame = CGRectMake(firstLineXOffset() + 3, verticalPadding, self.frame.size.width, lineHeight)
+    promptLabel!.frame = CGRect(x: kHorizontalSidePadding, y: verticalPadding, width: promptLabel!.frame.size.width, height: lineHeight)
+    placeholderLabel!.frame = CGRect(x: firstLineXOffset() + 3, y: verticalPadding, width: self.frame.size.width, height: lineHeight)
     }
     
     func firstLineXOffset() -> CGFloat {
@@ -369,22 +369,22 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
     
     func layoutContactViews() {
         
-        frameOfLastView = CGRectNull
+        frameOfLastView = CGRect.null
         lineCount = 0
         
         // Loop through contacts and position/add them to the view
         
         for contactKey in contactKeys {
-            var contactView = contacts[contactKey]
+            let contactView = contacts[contactKey]
             var contactViewFrame = contactView!.frame
             
-            if  CGRectIsNull(frameOfLastView!) {
+            if  frameOfLastView!.isNull {
                 // First contact view
                 contactViewFrame.origin.x = firstLineXOffset()
                 contactViewFrame.origin.y = kVerticalPadding + self.verticalPadding
             } else {
                 // Check if contact view will fit on the current line
-                var width = contactViewFrame.size.width + 2 * kHorizontalPadding
+                let width = contactViewFrame.size.width + 2 * kHorizontalPadding
                 if self.frame.size.width - kHorizontalSidePadding - frameOfLastView!.origin.x - frameOfLastView!.size.width - width >= 0 {
                    
                     // add to the same line
@@ -393,7 +393,7 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
                     contactViewFrame.origin.y = frameOfLastView!.origin.y
                 } else {
                     // No space on current line, jump to next line
-                    lineCount++
+                    lineCount += 1
                     contactViewFrame.origin.x = kHorizontalSidePadding
                     contactViewFrame.origin.y = (CGFloat(lineCount) * lineHeight) + kVerticalPadding + verticalPadding
                 }
@@ -410,7 +410,7 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
         // Now add the textView after the contact views
         let minWidth = kTextViewMinWidth + 2 * kHorizontalPadding
         let textViewHeight = self.lineHeight - 2 * kVerticalPadding
-        var textViewFrame = CGRectMake(0, 0, textField!.frame.size.width, textViewHeight)
+        var textViewFrame = CGRect(x: 0, y: 0, width: textField!.frame.size.width, height: textViewHeight)
         
         // Check if we can add the text field on the same line as the last contact view
         if (self.frame.size.width - kHorizontalSidePadding - frameOfLastView!.origin.x - frameOfLastView!.size.width - minWidth >= 0) {
@@ -419,7 +419,7 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
             textViewFrame.size.width = self.frame.size.width - textViewFrame.origin.x
         } else {
             // place text view on the next line
-            lineCount++
+            lineCount += 1
             
             textViewFrame.origin.x = kHorizontalSidePadding
             textViewFrame.size.width = self.frame.size.width - 2 * kHorizontalPadding
@@ -435,7 +435,7 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
         textField!.frame = textViewFrame
         
         // Add text view if it hasn't been added
-        textField!.center = CGPointMake(textField!.center.x, CGFloat(lineCount) * lineHeight + textViewHeight / 2 + kVerticalPadding + verticalPadding)
+        textField!.center = CGPoint(x: textField!.center.x, y: CGFloat(lineCount) * lineHeight + textViewHeight / 2 + kVerticalPadding + verticalPadding)
         
         if (textField!.superview == nil){
             scrollView!.addSubview(textField!)
@@ -443,15 +443,15 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
         
         // Hide the text view if we are limiting number of selected contacts to 1 and a contact has already been added
         if (limitToOne && contacts.count >= 1){
-            textField!.hidden = true
+            textField!.isHidden = true
             lineCount = 0
         }
         
         // Show placeholder if no there are no contacts
         if textField!.text ==  "" && contacts.count == 0 {
-            placeholderLabel!.hidden = false
+            placeholderLabel!.isHidden = false
         } else {
-            self.placeholderLabel!.hidden = true
+            self.placeholderLabel!.isHidden = true
         }
 
     }
@@ -469,7 +469,7 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
         
         var newHeight = (CGFloat(lineCount) + 1) * lineHeight + 2 * verticalPadding
         
-        scrollView!.contentSize = CGSizeMake(scrollView!.frame.size.width, newHeight)
+        scrollView!.contentSize = CGSize(width: scrollView!.frame.size.width, height: newHeight)
     
         // Adjust frame of view if necessary
         newHeight = (newHeight > maxFrameHeight) ? maxFrameHeight : newHeight
@@ -488,31 +488,31 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
 
     
     //MARK:- ContactTextFieldDelegate
-    func textFieldDidHitBackspaceWithEmptyText(textField: ContactTextField) {
+    func textFieldDidHitBackspaceWithEmptyText(_ textField: ContactTextField) {
         
-         println("textFieldDidHitBackspaceWithEmptyText For ContactPickerView")
+         print("textFieldDidHitBackspaceWithEmptyText For ContactPickerView")
         
-        self.textField!.hidden = false
+        self.textField!.isHidden = false
         
         if (contacts.count > 0) {
             // Capture "delete" key press when cell is empty
             selectedContactView = contacts[contactKeys.last!]
             selectedContactView!.select()
         } else {
-            delegate?.contactPickerTextViewDidChange(textField.text)
+            delegate?.contactPickerTextViewDidChange(textField.text!)
         }
     }
     
-    func textFieldDidChange(textField: ContactTextField) {
+    func textFieldDidChange(_ textField: ContactTextField) {
        
         if self.textField?.markedTextRange == nil {
-            delegate?.contactPickerTextViewDidChange(textField.text)
+            delegate?.contactPickerTextViewDidChange(textField.text!)
         }
         
         if  textField.text ==  "" && contacts.count == 0 {
-            placeholderLabel!.hidden = false
+            placeholderLabel!.isHidden = false
         } else {
-            placeholderLabel!.hidden = true
+            placeholderLabel!.isHidden = true
         }
         
         var offset = scrollView!.contentOffset
@@ -522,7 +522,7 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
         }
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let delegate = delegate {
          delegate.contactPickerTextFieldShouldReturn(textField)
         }
@@ -533,7 +533,7 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
     
     //MARK:- ContactViewDelegate 
     
-    func contactViewSelected(contactView: ContactView) {
+    func contactViewSelected(_ contactView: ContactView) {
         if selectedContactView != nil {
             selectedContactView!.unSelect()
         }
@@ -541,10 +541,10 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
         selectedContactView = contactView
         textField!.resignFirstResponder()
         textField!.text = ""
-        textField!.hidden = true
+        textField!.isHidden = true
     }
     
-    func contactViewWasUnselected(contactView: ContactView) {
+    func contactViewWasUnselected(_ contactView: ContactView) {
         if selectedContactView === contactView {
             selectedContactView = nil
         }
@@ -555,12 +555,12 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
         textField!.text = contactView.textField!.text
         
         // trigger textFieldDidChange if there is text in the textField
-        if count(textField!.text) > 0 {
+        if textField!.text!.characters.count > 0 {
             self.textFieldDidChange(textField!)
         }
     }
     
-    func contactViewShouldBeRemoved(contactView: ContactView) {
+    func contactViewShouldBeRemoved(_ contactView: ContactView) {
         removeContactView(contactView)
     }
     
@@ -583,7 +583,7 @@ class MyContactPickerView: UIView, UITextViewDelegate, ContactViewDelegate,UIScr
     }
     
     //MARK:- UIScrollviewDelegate
-    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         if shouldSelectTextView {
             shouldSelectTextView = false
             selectTextView()

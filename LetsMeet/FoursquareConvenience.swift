@@ -17,7 +17,7 @@ extension Client {
     
     // Get locations based on search string and city / place user has selected
     
-    func searchLocations(locationCoordinates:String, locationSearchString:String,  completionHandler: (result: [Venue]?, error: NSError?) -> Void) -> NSURLSessionDataTask? {
+    func searchLocations(_ locationCoordinates:String, locationSearchString:String,  completionHandler: @escaping (_ result: [Venue]?, _ error: NSError?) -> Void) -> URLSessionDataTask? {
         
         /* Specify parameters */
         
@@ -35,25 +35,25 @@ extension Client {
             
             if let error = error {
                 
-                completionHandler(result: nil, error: error)
+                completionHandler(nil, error)
                 
             } else {
                 
-                if let venueResponse = JSONResult.valueForKey(Client.JSONResponseKeys.VeueResponse) as? [String : AnyObject] {
+                if let venueResponse = JSONResult!.value(forKey: Client.JSONResponseKeys.VeueResponse) as? [String : AnyObject] {
                     
                     if let venues  = venueResponse[Client.JSONResponseKeys.Venues] as? [[String:AnyObject]] {
-                       var searchedVenues = Venue.venuesFromResults(venues)
-                       completionHandler(result: searchedVenues, error: nil)
+                        var searchedVenues:[Venue] = Venue.venuesFromResults(venues)
+                        completionHandler(searchedVenues, nil)
                     } else {
                         let dataerror = NSError(domain: "LetsMeet NoDataFound", code: 20, userInfo: [NSLocalizedDescriptionKey : "No location found."])
-                        completionHandler(result: nil, error: dataerror)
+                        completionHandler(nil, dataerror)
                         
                     }
                     
                 } else {
                     
                     let dataerror = NSError(domain: "LetsMeet DataError", code: 30, userInfo: [NSLocalizedDescriptionKey : "Internal Error getting locations. Please try again later."])
-                    completionHandler(result: nil, error: dataerror)
+                    completionHandler(nil, dataerror)
                 }
             }
         }
@@ -64,7 +64,7 @@ extension Client {
     
     // Get Images for locations searched from Foursquare
     
-    func getVenueImageURL(venueId:String,   completionHandler: (result: [String]?, error: NSError?) -> Void) -> NSURLSessionDataTask? {
+    func getVenueImageURL(_ venueId:String,   completionHandler: @escaping (_ result: [String]?, _ error: NSError?) -> Void) -> URLSessionDataTask? {
         
         /* Specify parameters */
         
@@ -84,11 +84,11 @@ extension Client {
             
             if let error = error {
                 
-                completionHandler(result: nil, error: error)
+                completionHandler(nil, error)
                 
             } else {
                
-                if let venueResponse = JSONResult.valueForKey(Client.JSONResponseKeys.VeueResponse) as? [String : AnyObject] {
+                if let venueResponse = JSONResult!.value(forKey: Client.JSONResponseKeys.VeueResponse) as? [String : AnyObject] {
                     
                     var imageUrl: Array<String>?
                     
@@ -117,12 +117,12 @@ extension Client {
                         }
                     }
                     
-                     completionHandler(result: imageUrl, error: nil)
+                     completionHandler(imageUrl, nil)
                     
                 } else {
                     
                     let dataerror = NSError(domain: "LetsMeet DataError", code: 20, userInfo: [NSLocalizedDescriptionKey : "Internal Error getting locations. Please try again later."])
-                    completionHandler(result: nil, error: dataerror)
+                    completionHandler(nil, dataerror)
                 }
             }
         }
@@ -132,7 +132,7 @@ extension Client {
     }
     
     // Get Foursquare categories
-    func getFoursquareCategories(completionHandler: (result: [Locationcategory]?, error: NSError?) -> Void) {
+    func getFoursquareCategories(_ completionHandler: @escaping (_ result: [Locationcategory]?, _ error: NSError?) -> Void) {
         
         /* Specify parameters */
         let parameters = [Client.ParameterKeys.ClientId : Client.Constants.clientId,
@@ -147,11 +147,11 @@ extension Client {
             
             if let error = error {
                 
-                completionHandler(result: nil, error: error)
+                completionHandler(nil, error)
                 
             } else {
                 
-                if let categoriesResponse = JSONResult.valueForKey(Client.JSONResponseKeys.CategoriesResponse) as? [String : AnyObject] {
+                if let categoriesResponse = JSONResult!.value(forKey: Client.JSONResponseKeys.CategoriesResponse) as? [String : AnyObject] {
                     
                     /* Get the cathegories and sub categories */
                     
@@ -163,15 +163,22 @@ extension Client {
                             
                             return categoryTobeAdded
                         }
-                        dispatch_async(dispatch_get_main_queue()) {
+                        DispatchQueue.main.async {
                             
                             /* Save these in core data so everytime, categories are not fetched */
-                            
-                            if (CoreDataStackManager.sharedInstance().saveContext()) {
-                                 completionHandler(result: categories, error: nil)
-                            } else {
-                                completionHandler(result: nil, error: NSError(domain: "LetsMeetError", code: 100, userInfo: nil))
+                            //Save in core data
+                            do {
+                                try CoreDataStackManager.sharedInstance().saveContext()
+                                 completionHandler(categories, nil)
+                            } catch {
+                               
+                                  completionHandler(nil, NSError(domain: "LetsMeetError", code: 100, userInfo: nil))
                             }
+//                            if (CoreDataStackManager.sharedInstance().saveContext()) {
+//                                 completionHandler(categories, nil)
+//                            } else {
+//                                completionHandler(nil, NSError(domain: "LetsMeetError", code: 100, userInfo: nil))
+//                            }
                         }
                     }
                     
@@ -180,7 +187,7 @@ extension Client {
                     /* Parsing Error */
                     
                     let dataerror = NSError(domain: "LetsMeet DataError", code: 20, userInfo: [NSLocalizedDescriptionKey : "Internal Error getting locations. Please try again later."])
-                    completionHandler(result: nil, error: dataerror)
+                    completionHandler(nil, dataerror)
                 }
             }
         }
